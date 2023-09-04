@@ -46,6 +46,7 @@ export default function CreateAccount() {
                                 Create your account
                             </p>
                             <input
+                                key="name"
                                 className="text-xl"
                                 style={{
                                     background: 'lightgrey',
@@ -59,6 +60,7 @@ export default function CreateAccount() {
                                 onChange={(e) => setName(e.target.value)}
                             />
                             <input
+                                key="email"
                                 className="text-xl"
                                 style={{
                                     background: 'lightgrey',
@@ -99,6 +101,7 @@ export default function CreateAccount() {
                                 Make your login
                             </p>
                             <input
+                                key="username"
                                 className="text-xl"
                                 style={{
                                     background: 'lightgrey',
@@ -109,9 +112,10 @@ export default function CreateAccount() {
                                     marginTop: 5,
                                 }}
                                 placeholder="Username"
-                                onChange={(e) => setName(e.target.value)}
+                                onChange={(e) => setUsername(e.target.value)}
                             />
                             <input
+                                key="password"
                                 className="text-xl"
                                 style={{
                                     background: 'lightgrey',
@@ -122,7 +126,8 @@ export default function CreateAccount() {
                                     marginTop: 5,
                                 }}
                                 placeholder="Password"
-                                onChange={(e) => setEmail(e.target.value)}
+                                type="password"
+                                onChange={(e) => setPassword(e.target.value)}
                             />
                             <button
                                 className="div-accent p-2 my-3 rounded-lg px-10"
@@ -199,4 +204,16 @@ function Modal({
             </div>
         </div>
     );
+}
+
+async function login(username: string, password: string) {
+    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/create_token`, {
+        method: 'POST',
+        body: Buffer.from(
+            JSON.stringify({
+                username,
+                password,
+            }),
+        ),
+    });
 }
