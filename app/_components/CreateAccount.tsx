@@ -1,5 +1,7 @@
 'use client';
 
+import { withAuth } from '@/src/auth/verifyAuth';
+import { useRouter } from 'next/navigation';
 import { CSSProperties, ReactNode, useState } from 'react';
 
 import DatePicker from 'react-datepicker';
@@ -12,9 +14,6 @@ export default function CreateAccount() {
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [birthday, setBirthday] = useState<Date | null>(new Date());
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
 
     return (
         <>
@@ -91,57 +90,73 @@ export default function CreateAccount() {
                             </button>
                         </div>
                     ) : page == 1 ? (
-                        <div
-                            style={{
-                                display: 'flex',
-                                flexDirection: 'column',
-                            }}
-                        >
-                            <p className="text-3xl font-bold mb-10">
-                                Make your login
-                            </p>
-                            <input
-                                key="username"
-                                className="text-xl"
-                                style={{
-                                    background: 'lightgrey',
-                                    borderRadius: 7,
-                                    margin: 2,
-                                    padding: 10,
-                                    width: '25vw',
-                                    marginTop: 5,
-                                }}
-                                placeholder="Username"
-                                onChange={(e) => setUsername(e.target.value)}
-                            />
-                            <input
-                                key="password"
-                                className="text-xl"
-                                style={{
-                                    background: 'lightgrey',
-                                    borderRadius: 7,
-                                    margin: 2,
-                                    padding: 10,
-                                    width: '25vw',
-                                    marginTop: 5,
-                                }}
-                                placeholder="Password"
-                                type="password"
-                                onChange={(e) => setPassword(e.target.value)}
-                            />
-                            <button
-                                className="div-accent p-2 my-3 rounded-lg px-10"
-                                onClick={() => setPage(1)}
-                            >
-                                <p className="text-white font-medium">
-                                    Sign Up
-                                </p>
-                            </button>
-                        </div>
+                        <SignUp />
                     ) : null}
                 </Modal>
             ) : null}
         </>
+    );
+}
+
+function SignUp() {
+    const router = useRouter();
+    const [username, setUsername] = useState('');
+    const [password, setPassword] = useState('');
+    const [message, setMessage] = useState('');
+
+    const handleSignUp = () => {
+        login(username, password)
+            .then(() => console.log('sign up success'))
+            .then(() => router.refresh())
+            .then(() => console.log('refreshed'))
+            .catch((error) => setMessage(error));
+    };
+
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+            }}
+        >
+            <p className="text-3xl font-bold mb-10">Make your login</p>
+            <input
+                key="username"
+                className="text-xl"
+                style={{
+                    background: 'lightgrey',
+                    borderRadius: 7,
+                    margin: 2,
+                    padding: 10,
+                    width: '25vw',
+                    marginTop: 5,
+                }}
+                placeholder="Username"
+                onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+                key="password"
+                className="text-xl"
+                style={{
+                    background: 'lightgrey',
+                    borderRadius: 7,
+                    margin: 2,
+                    padding: 10,
+                    width: '25vw',
+                    marginTop: 5,
+                }}
+                placeholder="Password"
+                type="password"
+                onChange={(e) => setPassword(e.target.value)}
+            />
+            <p className="text-accent">{message}</p>
+            <button
+                className="div-accent p-2 my-3 rounded-lg px-10"
+                onClick={handleSignUp}
+            >
+                <p className="text-white font-medium">Sign Up</p>
+            </button>
+        </div>
     );
 }
 
@@ -206,8 +221,8 @@ function Modal({
     );
 }
 
-async function login(username: string, password: string) {
-    fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/create_token`, {
+async function login(username: string, password: string): Promise<void> {
+    return fetch(`/api/create_token`, {
         method: 'POST',
         body: Buffer.from(
             JSON.stringify({
@@ -215,5 +230,10 @@ async function login(username: string, password: string) {
                 password,
             }),
         ),
+    }).then(async (response) => {
+        if (response.status != 200) {
+            const resp = await response.json();
+            throw resp.error;
+        }
     });
 }
