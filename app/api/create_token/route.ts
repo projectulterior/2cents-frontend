@@ -1,4 +1,5 @@
 import { cookies } from 'next/headers';
+import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
     const req = await request.json();
@@ -20,8 +21,6 @@ export async function POST(request: Request) {
         cookies().set('auth_token', resp.auth_token, { httpOnly: true });
         cookies().set('refresh_token', resp.auth_token, { httpOnly: true });
 
-        return new Response(JSON.stringify(resp), {
-            status: response.status,
-        });
+        return new NextResponse(resp.body, { status: response.status });
     });
 }

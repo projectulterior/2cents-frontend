@@ -15,7 +15,6 @@ const httpLink = createHttpLink({
 });
 
 const client = new ApolloClient({
-    // link: authLink.concat(httpLink),
     link: httpLink,
     cache: new InMemoryCache({
         typePolicies: {
@@ -26,11 +25,7 @@ const client = new ApolloClient({
     }),
 });
 
-export default function RootLayout({
-    children,
-}: {
-    children: React.ReactNode;
-}) {
+export default function Layout({ children }: { children: React.ReactNode }) {
     return (
         <main className="flex min-h-screen flex-row justify-center items-stretch">
             <Sidebar />

@@ -8,15 +8,24 @@ export async function POST(request: NextRequest) {
         throw 'no auth token';
     }
 
-    return fetch(`${process.env.PUBLIC_NEXT_API_URL}/graphql`, {
+    const body = await request.json();
+
+    console.log('gql request', body);
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/graphql`, {
         method: 'POST',
         headers: {
             Authorization: auth_token,
             'Content-Type': 'application/json',
         },
-        body: request.body,
-    }).then(
-        (response) =>
-            new NextResponse(response.body, { status: response.status }),
-    );
+        // body: Buffer.from(body),
+        body: Buffer.from(JSON.stringify(body)),
+    })
+        .then((response) => response.json())
+        .then(async (response) => {
+            console.log('response', response);
+            return new NextResponse(JSON.stringify(response), {
+                status: response.status,
+            });
+        });
 }
