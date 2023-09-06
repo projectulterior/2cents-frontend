@@ -35,7 +35,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     style={{
                         flex: 3,
                         maxWidth: 1000,
-                        background: 'yellow',
+                        // background: 'yellow',
                     }}
                 >
                     {children}
