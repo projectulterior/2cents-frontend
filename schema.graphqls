@@ -1,212 +1,213 @@
 schema {
-  query: Query
-  mutation: Mutation
-  subscription: Subscription
+    query: Query
+    mutation: Mutation
+    subscription: Subscription
 }
 
 scalar Time
 
 type Query {
-  user(id: ID): User!
-  users(page: Pagination!): Users!
+    user(id: ID): User!
+    users(page: Pagination!): Users!
 
-  post(id: ID!): Post!
-  posts(page: Pagination!): Posts!
+    post(id: ID!): Post!
+    posts(page: Pagination!): Posts!
 
-  comment(id: ID!): Comment!
-  comments(page: Pagination!): Comments!
+    comment(id: ID!): Comment!
+    comments(page: Pagination!): Comments!
 
-  like(id:ID!): Like!
-  likes(page:Pagination!): Likes!
+    like(id: ID!): Like!
+    likes(page: Pagination!): Likes!
 
-  channel(id: ID!): Channel!
-  channelByMembers(members: [ID!]!): Channel!
+    channel(id: ID!): Channel!
+    channelByMembers(members: [ID!]!): Channel!
 }
 
 type Mutation {
-  userUpdate(input: UserUpdateInput!): User!
-  userDelete: User!
+    userUpdate(input: UserUpdateInput!): User!
+    userDelete: User!
 
-  postCreate(input: PostCreateInput!): Post! 
-  postUpdate(id: ID!, input: PostUpdateInput!): Post!
-  postDelete(id: ID!): Post!
+    postCreate(input: PostCreateInput!): Post!
+    postUpdate(id: ID!, input: PostUpdateInput!): Post!
+    postDelete(id: ID!): Post!
 
-  commentCreate(input: CommentCreateInput!): Comment!
-  commentUpdate(id:ID!, input: CommentUpdateInput!): Comment!
-  commentDelete(id: ID!): Comment!
+    commentCreate(input: CommentCreateInput!): Comment!
+    commentUpdate(id: ID!, input: CommentUpdateInput!): Comment!
+    commentDelete(id: ID!): Comment!
 
-  likeCreate(id: ID!): Like!
-  likeDelete(id: ID!): Like!
+    likeCreate(id: ID!): Like!
+    likeDelete(id: ID!): Like!
 
-  userFollow(id: ID!, isFollow: Boolean!): Follow!
+    userFollow(id: ID!, isFollow: Boolean!): Follow!
 }
 
 type Subscription {
-  onUserUpdated(id: ID): User!
+    onUserUpdated(id: ID): User!
 }
 
 type User {
-  id: ID!
+    id: ID!
 
-  username: String
-  name: String
-  email: String
-  birthday: Birthday
-  bio: String
+    username: String
+    name: String
+    email: String
+    birthday: Birthday
+    bio: String
 
-  profile: String
+    profile: String
+    cover: String
 
-  cents: Cents
+    cents: Cents
 
-  follows(page: Pagination): Follows
-  posts(page: Pagination): Posts
-  likes(page: Pagination): Likes
+    follows(page: Pagination): Follows
+    posts(page: Pagination): Posts
+    likes(page: Pagination): Likes
 }
 
 type Cents {
-  total: Int!
-  deposited: Int!
-  earned: Int!
-  given: Int!
+    total: Int!
+    deposited: Int!
+    earned: Int!
+    given: Int!
 }
 
 type Users {
-  users: [User!]!
-  next: String!
+    users: [User!]!
+    next: String!
 }
 
 type Birthday {
-  month: Int!
-  day: Int!
-  year: Int!
+    month: Int!
+    day: Int!
+    year: Int!
 }
 
 type Posts {
-  posts: [Post!]!
-  next: String!
+    posts: [Post!]!
+    next: String!
 }
 
 type Post {
-  id: ID!
-  visibility: Visibility
-  content: String
-  contentType: ContentType
-  createdAt: Time
-  updatedAt: Time
-  author: User
-  likes(page: Pagination!): Likes
-  comments(page: Pagination!): Comments
+    id: ID!
+    visibility: Visibility
+    content: String
+    contentType: ContentType
+    createdAt: Time
+    updatedAt: Time
+    author: User
+    likes(page: Pagination!): Likes
+    comments(page: Pagination!): Comments
 }
 
 type Follow {
-  id: ID!
-  follower: User
-  followee: User
-  createdAt: Time
+    id: ID!
+    follower: User
+    followee: User
+    createdAt: Time
 }
 
 type Follows {
-  follows: [Follow!]!
-  next: String
+    follows: [Follow!]!
+    next: String
 }
 
 type Like {
-  id: ID!
-  post: Post
-  liker: User
-  createdAt: Time
-
+    id: ID!
+    post: Post
+    liker: User
+    createdAt: Time
 }
 
 type Likes {
-  likes: [Like!]!
-  next: String!
+    likes: [Like!]!
+    next: String!
 }
 
 type Comment {
-  id: ID!
-  post: Post
-  content: String
-  author: User
-  createdAt: Time
+    id: ID!
+    post: Post
+    content: String
+    author: User
+    createdAt: Time
 }
 
 type Comments {
-  comments: [Comment!]!
-  next: String!
+    comments: [Comment!]!
+    next: String!
 }
 
-
 type Channel {
-  id: ID!
-  members: [User!]
-  messages(page: Pagination!): Messages
+    id: ID!
+    members: [User!]
+    messages(page: Pagination!): Messages
 }
 
 type Message {
-  content: String
-  contentType: ContentType
-  createdAt: Time
-  sender: User
+    content: String
+    contentType: ContentType
+    createdAt: Time
+    sender: User
 }
 
 type Messages {
-  messages: [Message!]
-  next: String
+    messages: [Message!]
+    next: String
 }
 
 enum Visibility {
-  PUBLIC
-  FRIENDS
-  PRIVATE
+    PUBLIC
+    FRIENDS
+    PRIVATE
 }
 
 enum ContentType {
-  TEXT
-  IMAGE
-  VIDEO
+    TEXT
+    IMAGE
+    VIDEO
 }
 
 ### Inputs
 
 input Pagination {
-  cursor: String!
-  limit: Int!
+    cursor: String!
+    limit: Int!
 }
 
 input BirthdayInput {
-  day: Int
-  month: Int
-  year: Int
+    day: Int
+    month: Int
+    year: Int
 }
 
 input UserUpdateInput {
-  name: String
-  email: String
-  bio: String
-  birthday: BirthdayInput
-  profile: String
+    name: String
+    email: String
+    bio: String
+    birthday: BirthdayInput
+
+    profile: String
+    cover: String
 }
 
 input PostCreateInput {
-  visibility: Visibility!
-  content: String!
-  contentType: ContentType!
+    visibility: Visibility!
+    content: String!
+    contentType: ContentType!
 }
 
 input PostUpdateInput {
-  visibility: Visibility
-  content: String
-  contentType: ContentType
+    visibility: Visibility
+    content: String
+    contentType: ContentType
 }
 
 input CommentCreateInput {
-  postID: ID!
-  content: String!
-  contentType: ContentType!
+    postID: ID!
+    content: String!
+    contentType: ContentType!
 }
 
 input CommentUpdateInput {
-  content: String
-  contentType: ContentType
+    content: String
+    contentType: ContentType
 }

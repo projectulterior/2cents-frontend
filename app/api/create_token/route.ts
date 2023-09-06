@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         const resp = await response.json();
 
         cookies().set('auth_token', resp.auth_token, { httpOnly: true });
-        cookies().set('refresh_token', resp.auth_token, { httpOnly: true });
+        cookies().set('refresh_token', resp.refresh_token, { httpOnly: true });
 
         return new NextResponse(resp.body, { status: response.status });
     });

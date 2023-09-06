@@ -317,6 +317,7 @@ export type User = {
   bio?: Maybe<Scalars['String']['output']>;
   birthday?: Maybe<Birthday>;
   cents?: Maybe<Cents>;
+  cover?: Maybe<Scalars['String']['output']>;
   email?: Maybe<Scalars['String']['output']>;
   follows?: Maybe<Follows>;
   id: Scalars['ID']['output'];
@@ -345,6 +346,7 @@ export type UserPostsArgs = {
 export type UserUpdateInput = {
   bio?: InputMaybe<Scalars['String']['input']>;
   birthday?: InputMaybe<BirthdayInput>;
+  cover?: InputMaybe<Scalars['String']['input']>;
   email?: InputMaybe<Scalars['String']['input']>;
   name?: InputMaybe<Scalars['String']['input']>;
   profile?: InputMaybe<Scalars['String']['input']>;
@@ -362,7 +364,7 @@ export enum Visibility {
   Public = 'PUBLIC'
 }
 
-export type CoreUserFieldsFragment = { __typename?: 'User', id: string, name?: string | null, bio?: string | null, profile?: string | null } & { ' $fragmentName'?: 'CoreUserFieldsFragment' };
+export type CoreUserFieldsFragment = { __typename?: 'User', id: string, username?: string | null, name?: string | null, bio?: string | null, profile?: string | null, cover?: string | null } & { ' $fragmentName'?: 'CoreUserFieldsFragment' };
 
 export type GetUserQueryVariables = Exact<{
   userId?: InputMaybe<Scalars['ID']['input']>;
@@ -374,5 +376,5 @@ export type GetUserQuery = { __typename?: 'Query', user: (
     & { ' $fragmentRefs'?: { 'CoreUserFieldsFragment': CoreUserFieldsFragment } }
   ) };
 
-export const CoreUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}}]}}]} as unknown as DocumentNode<CoreUserFieldsFragment, unknown>;
-export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
+export const CoreUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<CoreUserFieldsFragment, unknown>;
+export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;

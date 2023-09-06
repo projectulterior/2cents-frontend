@@ -3,9 +3,11 @@ import { gql } from '@gql/__generated__/gql';
 export const CORE_USER_FIELDS = gql(`
     fragment CoreUserFields on User {
         id
+        username
         name
         bio
         profile
+        cover
     }
 `);
 

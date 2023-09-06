@@ -1,31 +1,65 @@
+import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
-    const auth_token = request.cookies.get('auth_token')?.value;
-
-    if (auth_token === undefined) {
-        // TODO: handle refresh
-        throw 'no auth token';
-    }
-
     const body = await request.json();
+    return graphql(body)
+        .then(async (response) => {
+            console.log('status', response.status);
+            if (response.status == 401) {
+                console.log('here');
+                // retry after refresh
+                return refreshToken(body);
+            }
 
-    console.log('gql request', body);
-
-    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/graphql`, {
-        method: 'POST',
-        headers: {
-            Authorization: auth_token,
-            'Content-Type': 'application/json',
-        },
-        // body: Buffer.from(body),
-        body: Buffer.from(JSON.stringify(body)),
-    })
-        .then((response) => response.json())
+            return response.json();
+        })
         .then(async (response) => {
             console.log('response', response);
             return new NextResponse(JSON.stringify(response), {
                 status: response.status,
             });
         });
+}
+
+function graphql(body: any) {
+    const auth_token = cookies().get('auth_token')?.value;
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/graphql`, {
+        method: 'POST',
+        headers: {
+            Authorization: auth_token ?? '',
+            'Content-Type': 'application/json',
+        },
+        body: Buffer.from(JSON.stringify(body)),
+    });
+}
+
+async function refreshToken(body: any) {
+    console.log('refreshing');
+
+    const refresh_token = cookies().get('refresh_token')?.value;
+
+    return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh_token`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: Buffer.from(
+            JSON.stringify({
+                token: refresh_token,
+            }),
+        ),
+    })
+        .then((response) => response.json())
+        .then((resp) => {
+            console.log('refreshed', resp);
+
+            cookies().set('auth_token', resp.auth_token, { httpOnly: true });
+            cookies().set('refresh_token', resp.refresh_token, {
+                httpOnly: true,
+            });
+        })
+        .then(() => graphql(body))
+        .then((resp) => resp.json());
 }
