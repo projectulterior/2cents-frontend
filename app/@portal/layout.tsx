@@ -1,4 +1,30 @@
+'use client';
+
 import Sidebar from './_components/Sidebar';
+
+import {
+    ApolloClient,
+    InMemoryCache,
+    ApolloProvider,
+    createHttpLink,
+} from '@apollo/client';
+
+const httpLink = createHttpLink({
+    uri: `/api/graphql`,
+    credentials: 'same-origin',
+});
+
+const client = new ApolloClient({
+    // link: authLink.concat(httpLink),
+    link: httpLink,
+    cache: new InMemoryCache({
+        typePolicies: {
+            Query: {
+                fields: {},
+            },
+        },
+    }),
+});
 
 export default function RootLayout({
     children,
@@ -8,19 +34,21 @@ export default function RootLayout({
     return (
         <main className="flex min-h-screen flex-row justify-center items-stretch">
             <Sidebar />
-            <div
-                className="flex flex-col items-stretch"
-                style={{
-                    flex: 3,
-                    maxWidth: 1000,
-                    background: 'yellow',
-                }}
-            >
-                {children}
-            </div>
-            <div className="flex flex-1 flex-col">
-                <h1>hello</h1>
-            </div>
+            <ApolloProvider client={client}>
+                <div
+                    className="flex flex-col items-stretch"
+                    style={{
+                        flex: 3,
+                        maxWidth: 1000,
+                        background: 'yellow',
+                    }}
+                >
+                    {children}
+                </div>
+                <div className="flex flex-1 flex-col">
+                    <h1>hello</h1>
+                </div>
+            </ApolloProvider>
         </main>
     );
 }
