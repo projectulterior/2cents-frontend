@@ -5,17 +5,13 @@ export async function POST(request: NextRequest) {
     const body = await request.json();
     return graphql(body)
         .then(async (response) => {
-            console.log('status', response.status);
             if (response.status == 401) {
-                console.log('here');
-                // retry after refresh
                 return refreshToken(body);
             }
 
             return response.json();
         })
         .then(async (response) => {
-            console.log('response', response);
             return new NextResponse(JSON.stringify(response), {
                 status: response.status,
             });
@@ -36,8 +32,6 @@ function graphql(body: any) {
 }
 
 async function refreshToken(body: any) {
-    console.log('refreshing');
-
     const refresh_token = cookies().get('refresh_token')?.value;
 
     return fetch(`${process.env.NEXT_PUBLIC_API_URL}/auth/refresh_token`, {
@@ -53,8 +47,6 @@ async function refreshToken(body: any) {
     })
         .then((response) => response.json())
         .then((resp) => {
-            console.log('refreshed', resp);
-
             cookies().set('auth_token', resp.auth_token, { httpOnly: true });
             cookies().set('refresh_token', resp.refresh_token, {
                 httpOnly: true,
