@@ -8,7 +8,7 @@ import More from '@/components/svg/More';
 import Notifications from '@/components/svg/Notifications';
 import Profile from '@/components/svg/Profile';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
 
 type Tab = {
@@ -17,8 +17,8 @@ type Tab = {
     icon: ReactNode;
 };
 
-export default function Sidebar({ path }: { path: string }) {
-    const router = useRouter();
+export default function Sidebar() {
+    const pathname = usePathname();
 
     const size = 50;
 
@@ -26,7 +26,7 @@ export default function Sidebar({ path }: { path: string }) {
         {
             name: 'Home',
             path: '/',
-            icon: <Home size={size} isMarked={path == '/'} />,
+            icon: <Home size={size} isMarked={pathname == '/'} />,
         },
         {
             name: 'Notifications',
@@ -34,29 +34,29 @@ export default function Sidebar({ path }: { path: string }) {
             icon: (
                 <Notifications
                     size={size}
-                    isMarked={path == '/notifications'}
+                    isMarked={pathname == '/notifications'}
                 />
             ),
         },
         {
             name: 'Messages',
             path: '/messages',
-            icon: <Messages size={size} isMarked={path == '/messages'} />,
+            icon: <Messages size={size} isMarked={pathname == '/messages'} />,
         },
         {
             name: 'Endorsed',
             path: '/endorsed',
-            icon: <Endorsed size={size} isMarked={path == '/endorsed'} />,
+            icon: <Endorsed size={size} isMarked={pathname == '/endorsed'} />,
         },
         {
             name: 'Profile',
             path: '/profile',
-            icon: <Profile size={size} isMarked={path == '/profile'} />,
+            icon: <Profile size={size} isMarked={pathname == '/profile'} />,
         },
         {
             name: 'More',
             path: '/more',
-            icon: <More size={size} isMarked={path == '/more'} />,
+            icon: <More size={size} isMarked={pathname == '/more'} />,
         },
     ];
 
@@ -84,7 +84,7 @@ export default function Sidebar({ path }: { path: string }) {
                 {tabs.map((tab, i) => (
                     <Link
                         key={i}
-                        className="flex flex-row justify-between items-center p-2"
+                        className="flex flex-row justify-between items-center p-2 hover:bg-gray-100 rounded-lg"
                         href={tab.path}
                     >
                         <div className="flex flex-1">{tab.icon}</div>

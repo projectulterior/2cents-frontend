@@ -22,9 +22,6 @@ export async function POST(request: Request) {
 
         return new Response(JSON.stringify(resp), {
             status: response.status,
-            // headers: {
-            //     'Set-Cookie': `auth_token=${resp.auth_token}; HttpOnly; refresh_token=${resp.refresh_token}; HttpOnly;`,
-            // },
         });
     });
 }
