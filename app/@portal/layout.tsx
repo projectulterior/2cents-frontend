@@ -1,7 +1,7 @@
 'use client';
 
+import './styles.css';
 import Sidebar from './_components/Sidebar';
-
 import {
     ApolloClient,
     InMemoryCache,
@@ -34,13 +34,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="flex flex-col items-stretch"
                     style={{
                         flex: 3,
-                        maxWidth: 1000,
-                        // background: 'yellow',
                     }}
                 >
                     {children}
                 </div>
-                <div className="flex flex-1 flex-col">
+                <div className="sidebar flex flex-1 flex-col">
                     <h1>hello</h1>
                 </div>
             </ApolloProvider>

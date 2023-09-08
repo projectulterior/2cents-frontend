@@ -35,7 +35,8 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                     display: 'flex',
                     flexDirection: 'row',
                     maxHeight: '300px',
-                    height: '100vh',
+                    minHeight: '150px',
+                    height: '30vh',
                     width: '100%',
                     position: 'relative',
                 }}
@@ -50,34 +51,65 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                     alt=""
                 />
             </div>
+
+            <Info user={user} />
+        </div>
+    );
+}
+
+function Info({ user }: { user: CoreUserFieldsFragment }) {
+    return (
+        <div className="flex p-10" style={{ position: 'relative' }}>
             <div
-                style={{
-                    display: 'flex',
-                    flexDirection: 'row',
-                    width: '30%',
-                    aspectRatio: 1 / 1,
-                    position: 'relative',
-                    borderRadius: '1000px',
-                    borderWidth: 5,
-                    overflow: 'hidden',
-                    top: -150,
-                    left: 75,
-                }}
+                className="flex flex-col justify-center items-stretch bg-yellow-100"
+                style={{ flex: 2 }}
             >
-                <Image
-                    style={{
-                        objectFit: 'cover',
-                    }}
-                    fill={true}
-                    priority={true}
-                    src={user.profile ? user.profile : '/me.jpg'}
-                    alt=""
-                />
+                <div className="flex justify-center" style={{ height: 120 }}>
+                    <div
+                        style={{
+                            width: '30%',
+                            aspectRatio: 1 / 1,
+                            position: 'absolute',
+                            borderRadius: '1000px',
+                            borderWidth: 5,
+                            top: '-50%',
+                            // top: -300,
+                            overflow: 'hidden',
+                        }}
+                    >
+                        <Image
+                            style={{
+                                objectFit: 'cover',
+                            }}
+                            fill={true}
+                            priority={true}
+                            src={user.profile ? user.profile : '/me.jpg'}
+                            alt=""
+                        />
+                    </div>
+                </div>
+                <div className="flex flex-row">
+                    <div className="flex flex-1 flex-col justify-center items-start">
+                        <p className="text-3xl font-semibold p-2">
+                            @{user.username}
+                        </p>
+                        <p className="p-2" style={{ color: 'grey' }}>
+                            {user.bio}
+                        </p>
+                    </div>
+                    <div className="flex flex-1 flex-col justify-center items-center">
+                        <p>Online</p>
+                    </div>
+                </div>
             </div>
-            <p className="text-3xl font-semibold">@{user.username}</p>
-            <p className="" style={{ color: 'grey' }}>
-                {user.bio}
-            </p>
+            <div
+                className="flex flex-1 flex-col justify-center items-center"
+                style={{ flex: 3 }}
+            >
+                <p>Cypress, CA</p>
+                <p>Joined September 2023</p>
+                <p>pornhub.com/sbk</p>
+            </div>
         </div>
     );
 }
