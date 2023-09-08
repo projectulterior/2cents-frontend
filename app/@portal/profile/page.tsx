@@ -29,14 +29,14 @@ export default function () {
 
 function Profile({ user }: { user: CoreUserFieldsFragment }) {
     return (
-        <div style={{ background: 'pink' }}>
+        <div style={{ position: 'relative' }}>
             <div
                 style={{
                     display: 'flex',
                     flexDirection: 'row',
                     maxHeight: '300px',
-                    minHeight: '150px',
-                    height: '30vh',
+                    minHeight: '200px',
+                    height: '20vw',
                     width: '100%',
                     position: 'relative',
                 }}
@@ -47,61 +47,87 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                     }}
                     fill={true}
                     priority={true}
-                    src={user.cover ? user.cover : '/no-cover.png'}
+                    src={user.cover ? user.cover : '/cover.avif'}
                     alt=""
                 />
             </div>
-
             <Info user={user} />
+            <div
+                className="flex flex-row"
+                style={{
+                    position: 'absolute',
+                    height: '70%',
+                    width: '100%',
+                    top: 0,
+                    left: 0,
+                }}
+            >
+                <div
+                    className="flex flex-1 flex-col justify-start items-stretch"
+                    style={{
+                        position: 'relative',
+                        top: '50%',
+                        left: '3%',
+                    }}
+                >
+                    <div
+                        className="flex flex-1 flex-row justify-start items-stretch"
+                        style={{
+                            position: 'relative',
+                            width: '100%',
+                        }}
+                    >
+                        <div
+                            style={{
+                                height: '100%',
+                                aspectRatio: 1 / 1,
+                                borderRadius: '1000px',
+                                position: 'absolute',
+                                borderWidth: 5,
+                                overflow: 'hidden',
+                                background: 'grey',
+                            }}
+                        >
+                            <Image
+                                style={{
+                                    objectFit: 'cover',
+                                }}
+                                fill={true}
+                                priority={true}
+                                src={user.profile ? user.profile : '/me.jpg'}
+                                alt=""
+                            />
+                        </div>
+                    </div>
+                    <div className="flex flex-row">
+                        <div className="flex flex-1 flex-col justify-start items-start">
+                            <p className="text-2xl font-semibold p-2">
+                                @{user.username}
+                            </p>
+                            <p className="p-2" style={{ color: 'grey' }}>
+                                {user.bio} really really really really really
+                                really really really really really long
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div className="flex-1" />
+            </div>
         </div>
     );
+}
+
+function Main({ user }: { user: CoreUserFieldsFragment }) {
+    return;
 }
 
 function Info({ user }: { user: CoreUserFieldsFragment }) {
     return (
         <div className="flex p-10" style={{ position: 'relative' }}>
             <div
-                className="flex flex-col justify-center items-stretch bg-yellow-100"
+                className="flex flex-col justify-center items-stretch"
                 style={{ flex: 2 }}
-            >
-                <div className="flex justify-center" style={{ height: 120 }}>
-                    <div
-                        style={{
-                            width: '30%',
-                            aspectRatio: 1 / 1,
-                            position: 'absolute',
-                            borderRadius: '1000px',
-                            borderWidth: 5,
-                            top: '-50%',
-                            // top: -300,
-                            overflow: 'hidden',
-                        }}
-                    >
-                        <Image
-                            style={{
-                                objectFit: 'cover',
-                            }}
-                            fill={true}
-                            priority={true}
-                            src={user.profile ? user.profile : '/me.jpg'}
-                            alt=""
-                        />
-                    </div>
-                </div>
-                <div className="flex flex-row">
-                    <div className="flex flex-1 flex-col justify-center items-start">
-                        <p className="text-3xl font-semibold p-2">
-                            @{user.username}
-                        </p>
-                        <p className="p-2" style={{ color: 'grey' }}>
-                            {user.bio}
-                        </p>
-                    </div>
-                    <div className="flex flex-1 flex-col justify-center items-center">
-                        <p>Online</p>
-                    </div>
-                </div>
-            </div>
+            ></div>
             <div
                 className="flex flex-1 flex-col justify-center items-center"
                 style={{ flex: 3 }}

@@ -34,6 +34,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="flex flex-col items-stretch"
                     style={{
                         flex: 3,
+                        maxWidth: 1000,
                     }}
                 >
                     {children}
