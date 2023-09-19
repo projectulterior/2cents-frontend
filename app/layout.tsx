@@ -19,7 +19,7 @@ export default function RootLayout({
     portal: React.ReactNode;
     landing: React.ReactNode;
 }) {
-    const auth_token = cookies().get('auth_token');
+    const auth_token = cookies().get('auth_token')?.value;
 
     return (
         <html lang="en">

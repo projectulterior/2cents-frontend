@@ -17,19 +17,30 @@ export default function () {
         return <Loading />;
     }
 
+    if (error) {
+        console.error(error);
+    }
+
     const user: any = data?.user;
 
     return (
         <>
             <Header name={user.name} />
             <Profile user={user} />
+            <Numbers user={user} />
         </>
     );
 }
 
 function Profile({ user }: { user: CoreUserFieldsFragment }) {
     return (
-        <div style={{ position: 'relative' }}>
+        <div
+            style={{
+                position: 'relative',
+                // background: 'pink',
+                marginBottom: 50,
+            }}
+        >
             <div
                 style={{
                     display: 'flex',
@@ -66,6 +77,7 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                     className="flex flex-1 flex-col justify-start items-stretch"
                     style={{
                         position: 'relative',
+                        height: '100%',
                         top: '50%',
                         left: '3%',
                     }}
@@ -105,8 +117,7 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                                 @{user.username}
                             </p>
                             <p className="p-2" style={{ color: 'grey' }}>
-                                {user.bio} really really really really really
-                                really really really really really long
+                                {user.bio} // TODO: fix when really long
                             </p>
                         </div>
                     </div>
@@ -115,10 +126,6 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
             </div>
         </div>
     );
-}
-
-function Main({ user }: { user: CoreUserFieldsFragment }) {
-    return;
 }
 
 function Info({ user }: { user: CoreUserFieldsFragment }) {
@@ -135,6 +142,22 @@ function Info({ user }: { user: CoreUserFieldsFragment }) {
                 <p>Cypress, CA</p>
                 <p>Joined September 2023</p>
                 <p>pornhub.com/sbk</p>
+            </div>
+        </div>
+    );
+}
+
+function Numbers({ user }: { user: CoreUserFieldsFragment }) {
+    return (
+        <div className="flex flex-row justify-around items-center">
+            <div>
+                <p>10 Following</p>
+            </div>
+            <div>
+                <p>10 Followers</p>
+            </div>
+            <div>
+                <p>10 Posts</p>
             </div>
         </div>
     );
