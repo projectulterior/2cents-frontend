@@ -6,6 +6,7 @@ import { QUERY_GET_USER } from '@/gql/user';
 import { CoreUserFieldsFragment } from '@/gql/__generated__/graphql';
 import Loading from '@/components/Loading';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function () {
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_USER, {
@@ -28,6 +29,7 @@ export default function () {
             <Header name={user.name} />
             <Profile user={user} />
             <Numbers user={user} />
+            <Posts />
         </>
     );
 }
@@ -158,6 +160,54 @@ function Numbers({ user }: { user: CoreUserFieldsFragment }) {
             </div>
             <div>
                 <p>10 Posts</p>
+            </div>
+        </div>
+    );
+}
+
+function Posts({}: {}) {
+    const [isPosts, setIsPosts] = useState(true);
+
+    return (
+        <div
+            className="flex"
+            style={{
+                padding: 25,
+                margin: 25,
+                borderTop: '1px solid lightgrey',
+            }}
+        >
+            <div
+                className="flex flex-1 justify-center items-center"
+                style={{
+                    cursor: 'pointer',
+                }}
+                onClick={() => setIsPosts(true)}
+            >
+                <p
+                    style={{
+                        borderBottom: isPosts ? '1px solid #D67953' : undefined,
+                    }}
+                >
+                    Posts
+                </p>
+            </div>
+            <div
+                className="flex flex-1 justify-center items-center"
+                style={{
+                    cursor: 'pointer',
+                }}
+                onClick={() => setIsPosts(false)}
+            >
+                <p
+                    style={{
+                        borderBottom: !isPosts
+                            ? '1px solid #D67953'
+                            : undefined,
+                    }}
+                >
+                    Comments
+                </p>
             </div>
         </div>
     );
