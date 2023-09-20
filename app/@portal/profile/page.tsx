@@ -11,8 +11,13 @@ import Loading from '@/components/Loading';
 import Image from 'next/image';
 import { useState } from 'react';
 import Endorsed from '@/components/svg/Endorsed';
-import Logo from '@/components/svg/Logo';
-import Messages from '@/components/svg/Messages';
+import ProfileImage from '../_components/ProfileImage';
+
+const POST: any = {
+    id: 'hello',
+    content: 'very very very very very very very very long',
+    author: { name: 'Soung Bae Kim', username: 'sbkim1' },
+};
 
 export default function () {
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_USER, {
@@ -37,41 +42,6 @@ export default function () {
             <Numbers user={user} />
             <Posts user={user} />
         </>
-    );
-}
-
-function ProfileImage({ user }: { user: CoreUserFieldsFragment }) {
-    return (
-        <div
-            className="flex flex-1 flex-row justify-start items-stretch"
-            style={{
-                position: 'relative',
-                width: '100%',
-                // height: '100%',
-            }}
-        >
-            <div
-                style={{
-                    height: '100%',
-                    aspectRatio: 1 / 1,
-                    borderRadius: '1000px',
-                    position: 'absolute',
-                    borderWidth: 5,
-                    overflow: 'hidden',
-                    background: 'grey',
-                }}
-            >
-                <Image
-                    style={{
-                        objectFit: 'cover',
-                    }}
-                    fill={true}
-                    priority={true}
-                    src={user.profile ? user.profile : '/me.jpg'}
-                    alt=""
-                />
-            </div>
-        </div>
     );
 }
 
@@ -228,20 +198,14 @@ function Posts({ user }: { user: CoreUserFieldsFragment }) {
                     </p>
                 </div>
             </div>
-            <Post
-                post={{
-                    id: 'hello',
-                    content: 'very very very very very very very very long',
-                    author: { name: 'Soung Bae Kim', username: 'sbkim1' },
-                }}
-            />
-            <Post
-                post={{
-                    id: 'hello',
-                    content: 'very very very very very very very very long',
-                    author: { name: 'Soung Bae Kim', username: 'sbkim1' },
-                }}
-            />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
+            <Post post={POST} />
         </>
     );
 }

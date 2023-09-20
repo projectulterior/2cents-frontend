@@ -10,5 +10,10 @@ export const CORE_USER_FIELDS = gql(`
         contentType
         createdAt
         updatedAt
+
+        like {
+            id
+            createdAt
+        }
     }
 `);
