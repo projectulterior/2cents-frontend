@@ -29,6 +29,14 @@ export const QUERY_GET_POSTS = gql(`
     }
 `);
 
+export const QUERY_GET_POST = gql(`
+    query Post($id: ID!) {
+        post(id: $id) {
+            ...CorePostFields
+        }
+    }
+`);
+
 export const MUTATION_CREATE_POST = gql(`
     mutation PostCreate($input: PostCreateInput!) {
         postCreate(input: $input) {

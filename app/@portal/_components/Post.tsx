@@ -13,6 +13,8 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
     const author: CoreUserFieldsFragment =
         post.author as CoreUserFieldsFragment;
 
+    console.log('[Post]', post);
+
     return (
         <Link
             href={`/p/${post.id}`}
@@ -38,7 +40,7 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
                         <a style={{ fontWeight: 'bold' }}>@{author.username}</a>
                     </p>
                 </Link>
-                <p className="py-5">
+                <p className="py-5" style={{ whiteSpace: 'pre-line' }}>
                     {(post.content?.length ?? 0) < MAX_CONTENT_LENGTH
                         ? post.content
                         : post.content?.slice(0, MAX_CONTENT_LENGTH) + ' ...'}
