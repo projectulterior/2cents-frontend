@@ -6,6 +6,7 @@ import MoneyBox from '@/components/svg/MoneyBox';
 import SecurityKey from '@/components/svg/SecurityKey';
 import LogoutIcon from '@/components/svg/LogoutIcon';
 import { ReactNode, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 function Account() {
     return (
@@ -16,11 +17,23 @@ function Account() {
 }
 
 function Logout() {
+    const router = useRouter();
+
     return (
         <Item
             name="Logout"
             icon={<LogoutIcon size={40} />}
-            onClick={() => {}}
+            onClick={() => {
+                fetch('/api/logout', { method: 'POST' })
+                    .then((resp) => {
+                        if (resp.status != 200) {
+                            throw resp.status;
+                        }
+
+                        router.push('/');
+                    })
+                    .catch((err) => console.error(err));
+            }}
         />
     );
 }
@@ -85,21 +98,13 @@ function ExpandableItem({
     );
 }
 
-function MoreItems() {
-    return (
-        <>
-            <Account />
-            <Funds />
-            <Logout />
-        </>
-    );
-}
-
 export default function () {
     return (
         <>
             <Header name="More" />
-            <MoreItems />
+            <Account />
+            <Funds />
+            <Logout />
         </>
     );
 }
