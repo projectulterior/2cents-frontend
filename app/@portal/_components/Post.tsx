@@ -11,7 +11,7 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
 
     return (
         <div
-            className="flex justify-start flex-row items-stretch p-3"
+            className="flex justify-start flex-row items-stretch p-5"
             style={{ borderBottom: '1px solid lightgrey' }}
         >
             <div
@@ -21,26 +21,26 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
                 <ProfileImage user={author} />
             </div>
             <div
-                className="flex flex-col p-3"
+                className="flex flex-col px-3"
                 style={{
                     flex: 9,
                     // background: 'pink',
                 }}
             >
-                <p className="pb-5">
+                <p className="">
                     {author.name}{' '}
                     <a style={{ fontWeight: 'bold' }}>@{author.username}</a>
                 </p>
-                <p>{post.content}</p>
+                <p className="py-5">{post.content}</p>
                 <div
-                    className="flex flex-row items-center p-2"
+                    className="flex flex-row items-center"
                     // style={{ background: 'yellow' }}
                 >
-                    <div className="flex flex-row justify-start items-center">
+                    <div className="flex flex-row justify-start items-center px-3">
                         <Endorsed key={post.id} isMarked size={40} />
                         <p>30</p>
                     </div>
-                    <div className="flex flex-row justify-start items-center">
+                    <div className="flex flex-row justify-start items-center px-3">
                         <Endorsed key={post.id} isMarked size={40} />
                         <p>30</p>
                     </div>

@@ -18,7 +18,17 @@ const client = new ApolloClient({
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
-                fields: {},
+                fields: {
+                    posts: {
+                        keyArgs: false,
+                        merge(existing = { posts: [] }, incoming) {
+                            return {
+                                posts: [...existing.posts, ...incoming.posts],
+                                next: incoming.next,
+                            };
+                        },
+                    },
+                },
             },
         },
     }),

@@ -1,6 +1,6 @@
 import { gql } from '@gql/__generated__/gql';
 
-export const CORE_USER_FIELDS = gql(`
+export const CORE_POST_FIELDS = gql(`
     fragment CorePostFields on Post {
         id
         author {
@@ -14,6 +14,25 @@ export const CORE_USER_FIELDS = gql(`
         like {
             id
             createdAt
+        }
+    }
+`);
+
+export const QUERY_GET_POSTS = gql(`
+    query Posts($page: Pagination!) {
+        posts(page: $page) {
+            posts {
+                ...CorePostFields
+            }
+            next
+        }
+    }
+`);
+
+export const MUTATION_CREATE_POST = gql(`
+    mutation PostCreate($input: PostCreateInput!) {
+        postCreate(input: $input) {
+            ...CorePostFields
         }
     }
 `);
