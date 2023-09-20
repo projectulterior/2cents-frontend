@@ -3,7 +3,7 @@ import Post from './Post';
 import { QUERY_GET_POSTS } from '@/gql/post';
 import Loading from '@/components/Loading';
 import { CorePostFieldsFragment } from '@/gql/__generated__/graphql';
-import { ReactNode, useRef } from 'react';
+import { ReactNode, useEffect, useRef, useState } from 'react';
 
 export default function Posts({ children }: { children?: ReactNode }) {
     const ref = useRef<HTMLDivElement>(null);
@@ -18,6 +18,39 @@ export default function Posts({ children }: { children?: ReactNode }) {
         errorPolicy: 'all',
     });
 
+    const [height, setHeight] = useState(0);
+    const [scroll, setScroll] = useState(0);
+    const [offset, setOffset] = useState(0);
+
+    useEffect(() => {
+        function scroll(e: any) {
+            const offset = ref.current?.scrollTop ?? 0;
+            const height = ref.current?.scrollHeight ?? 0;
+            const scrollY = e.currentTarget.scrollY;
+
+            setHeight(height);
+            setScroll(scrollY);
+            setOffset(offset);
+
+            console.log({ offset, height, scrollY });
+            console.log('ref', offset + scrollY, height);
+        }
+
+        window.addEventListener('scroll', scroll);
+        return () => window.removeEventListener('scroll', scroll);
+    }, []);
+
+    useEffect(() => {
+        if (offset + scroll >= height - 1500 && !loading && data?.posts.next) {
+            fetchMore({
+                variables: {
+                    page: { cursor: data?.posts.next, limit: 10 },
+                },
+            });
+            console.log('next', data?.posts.next);
+        }
+    }, [loading, offset, height, scroll]);
+
     if (loading) {
         return <Loading />;
     }
@@ -29,24 +62,7 @@ export default function Posts({ children }: { children?: ReactNode }) {
     const posts: CorePostFieldsFragment[] = data?.posts.posts as any;
 
     return (
-        <div
-            ref={ref}
-            style={{ overflow: 'scroll' }}
-            onScroll={(e) => {
-                const offset = ref.current?.offsetHeight ?? 0;
-                const height = e.currentTarget.scrollHeight;
-                const scroll = e.currentTarget.scrollTop;
-
-                if (offset + scroll >= height && !loading && data?.posts.next) {
-                    fetchMore({
-                        variables: {
-                            page: { cursor: data?.posts.next, limit: 10 },
-                        },
-                    });
-                    console.log('bottom', data?.posts.next);
-                }
-            }}
-        >
+        <div ref={ref} style={{ overflow: 'auto' }}>
             {children}
             <div style={{}}>
                 {posts.map((post, i) => (

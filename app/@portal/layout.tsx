@@ -45,14 +45,16 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         flex: 3,
                         maxWidth: 1000,
                         // background: 'black',
-                        height: '100vh',
-                        overflow: 'auto',
+                        // height: '100vh',
+                        overflow: 'hidden',
                     }}
                 >
                     {children}
                 </div>
                 <div className="sidebar flex flex-1 flex-col">
-                    <h1>hello</h1>
+                    <div style={{ position: 'sticky', top: 0 }}>
+                        <h1>hello</h1>
+                    </div>
                 </div>
             </ApolloProvider>
         </main>

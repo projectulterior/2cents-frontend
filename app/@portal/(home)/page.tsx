@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import Header from './_components/Header';
-import ProfileImage from './_components/ProfileImage';
+import Header from '../_components/Header';
+import ProfileImage from '../_components/ProfileImage';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_GET_USER } from '@/gql/user';
 import {
@@ -13,10 +13,10 @@ import {
     Visibility,
 } from '@/gql/__generated__/graphql';
 import Loading from '@/components/Loading';
-import Post from './_components/Post';
-import Posts from './_components/Posts';
+import Post from '../_components/Post';
+import Posts from '../_components/Posts';
 import { MUTATION_CREATE_POST } from '@/gql/post';
-import Emoji from './_components/Emoji';
+import Emoji from '../_components/Emoji';
 
 export default function () {
     return (

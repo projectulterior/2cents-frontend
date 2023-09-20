@@ -13,8 +13,6 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
     const author: CoreUserFieldsFragment =
         post.author as CoreUserFieldsFragment;
 
-    console.log('[Post]', post);
-
     return (
         <Link
             href={`/p/${post.id}`}

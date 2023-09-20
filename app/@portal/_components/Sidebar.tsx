@@ -68,12 +68,14 @@ export default function Sidebar() {
     ];
 
     return (
-        <div className="sidebar flex flex-1 flex-col items-end">
+        <div className="sidebar flex flex-1 flex-col items-end" style={{}}>
             <div
                 className="flex flex-col items-stretch px-10"
                 style={{
                     justifyContent: 'center',
                     alignItems: 'stretch',
+                    position: 'sticky',
+                    top: 0,
                 }}
             >
                 <Link
