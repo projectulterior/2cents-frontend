@@ -8,12 +8,17 @@ import { useQuery } from '@apollo/client';
 import { QUERY_GET_USER } from '@/gql/user';
 import { CoreUserFieldsFragment } from '@/gql/__generated__/graphql';
 import Loading from '@/components/Loading';
+import Post from './_components/Post';
+import Posts from './_components/Posts';
 
 export default function () {
     return (
         <>
             <Header name="Home" />
-            <CreatePost />
+            <div style={{ overflow: 'scroll' }}>
+                <CreatePost />
+                <PostLists />
+            </div>
         </>
     );
 }
@@ -43,8 +48,8 @@ function CreatePost() {
 
     return (
         <div
-            className="flex flex-col justify-start items-stretch"
-            style={{ minHeight: 100 }}
+            className="flex flex-col justify-start items-stretch my-10"
+            style={{ minHeight: 100, borderBottom: '1px solid lightgrey' }}
         >
             <div
                 className="flex items-stretch"
@@ -60,7 +65,7 @@ function CreatePost() {
                 >
                     <ProfileImage user={user} />
                 </div>
-                <div className="flex flex-1 flex-col p-3">
+                <div className="flex flex-1 flex-col px-3">
                     <textarea
                         ref={textAreaRef}
                         className=" p-5"
@@ -78,11 +83,11 @@ function CreatePost() {
                         content={content}
                         placeholder="What's your 2cents?"
                     />
-                    <div className="flex justify-end pt-3 px-3">
+                    <div className="flex justify-end p-3">
                         <button
                             style={{
                                 background: '#d67953',
-                                padding: '10px 20px 10px 20px',
+                                padding: '5px 15px 5px 15px',
                                 borderRadius: 5,
                             }}
                         >
@@ -111,4 +116,8 @@ function useAutosizeTextArea(
             textAreaRef.style.height = scrollHeight + 'px';
         }
     }, [textAreaRef, value]);
+}
+
+function PostLists() {
+    return <Posts />;
 }

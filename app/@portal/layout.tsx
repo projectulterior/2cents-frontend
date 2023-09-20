@@ -35,6 +35,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                         flex: 3,
                         maxWidth: 1000,
                         // background: 'black',
+                        height: '100vh',
+                        overflow: 'auto',
                     }}
                 >
                     {children}
