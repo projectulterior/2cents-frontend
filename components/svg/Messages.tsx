@@ -7,10 +7,10 @@ export default function Messages({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#messages)" />
+            <rect width="70" height="70" fill="url(#messages_marked)" />
             <defs>
                 <pattern
-                    id="messages"
+                    id="messages_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function Messages({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#messages)" />
+            <rect width="70" height="70" fill="url(#messages_unmarked)" />
             <defs>
                 <pattern
-                    id="messages"
+                    id="messages_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"

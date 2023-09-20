@@ -3,10 +3,16 @@
 import { useQuery } from '@apollo/client';
 import Header from '../_components/Header';
 import { QUERY_GET_USER } from '@/gql/user';
-import { CoreUserFieldsFragment } from '@/gql/__generated__/graphql';
+import {
+    CorePostFieldsFragment,
+    CoreUserFieldsFragment,
+} from '@/gql/__generated__/graphql';
 import Loading from '@/components/Loading';
 import Image from 'next/image';
 import { useState } from 'react';
+import Endorsed from '@/components/svg/Endorsed';
+import Logo from '@/components/svg/Logo';
+import Messages from '@/components/svg/Messages';
 
 export default function () {
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_USER, {
@@ -41,6 +47,7 @@ function ProfileImage({ user }: { user: CoreUserFieldsFragment }) {
             style={{
                 position: 'relative',
                 width: '100%',
+                // height: '100%',
             }}
         >
             <div
@@ -194,8 +201,9 @@ function Posts({ user }: { user: CoreUserFieldsFragment }) {
                     <p
                         style={{
                             borderBottom: isPosts
-                                ? '1px solid #D67953'
+                                ? '2px solid #D67953'
                                 : undefined,
+                            fontWeight: isPosts ? 'bold' : 'normal',
                         }}
                     >
                         Posts
@@ -211,26 +219,74 @@ function Posts({ user }: { user: CoreUserFieldsFragment }) {
                     <p
                         style={{
                             borderBottom: !isPosts
-                                ? '1px solid #D67953'
+                                ? '2px solid #D67953'
                                 : undefined,
+                            fontWeight: !isPosts ? 'bold' : 'normal',
                         }}
                     >
                         Comments
                     </p>
                 </div>
             </div>
+            <Post
+                post={{
+                    id: 'hello',
+                    content: 'very very very very very very very very long',
+                    author: { name: 'Soung Bae Kim', username: 'sbkim1' },
+                }}
+            />
+            <Post
+                post={{
+                    id: 'hello',
+                    content: 'very very very very very very very very long',
+                    author: { name: 'Soung Bae Kim', username: 'sbkim1' },
+                }}
+            />
+        </>
+    );
+}
+
+function Post({ post }: { post: CorePostFieldsFragment }) {
+    const author: CoreUserFieldsFragment =
+        post.author as CoreUserFieldsFragment;
+
+    return (
+        <div
+            className="flex justify-start flex-row items-stretch p-3"
+            style={{ borderBottom: '1px solid lightgrey' }}
+        >
             <div
-                className="flex flex-1 justify-start flex-col items-stretch"
-                style={{ background: 'blue' }}
+                className="flex justify-start flex-col"
+                style={{ width: 75, height: 75 }}
             >
-                <h1>Post</h1>
+                <ProfileImage user={author} />
+            </div>
+            <div
+                className="flex flex-col p-3"
+                style={{
+                    flex: 9,
+                    // background: 'pink',
+                }}
+            >
+                <p className="pb-5">
+                    {author.name}{' '}
+                    <a style={{ fontWeight: 'bold' }}>@{author.username}</a>
+                </p>
+                <p>{post.content}</p>
                 <div
-                    className="flex flex-1 justify-start flex-col"
-                    style={{ width: 100 }}
+                    className="flex flex-row items-center p-2"
+                    // style={{ background: 'yellow' }}
                 >
-                    <ProfileImage user={user} />
+                    <div className="flex flex-row justify-start items-center">
+                        <Endorsed key={post.id} isMarked size={40} />
+                        <p>30</p>
+                    </div>
+                    <div className="flex flex-row justify-start items-center">
+                        <Endorsed key={post.id} isMarked size={40} />
+                        <p>30</p>
+                    </div>
                 </div>
             </div>
-        </>
+        </div>
     );
 }

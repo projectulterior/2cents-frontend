@@ -1,6 +1,5 @@
 'use client';
 
-import './styles.css';
 import Sidebar from './_components/Sidebar';
 import {
     ApolloClient,

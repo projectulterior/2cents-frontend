@@ -8,13 +8,20 @@ export const CORE_USER_FIELDS = gql(`
         bio
         profile
         cover
-        createdAt
     }
 `);
 
 export const QUERY_GET_USER = gql(`
     query GetUser($userId: ID) {
         user(id: $userId) {
+            ...CoreUserFields
+        }
+    }
+`);
+
+export const MUTATION_USER_UPDATE = gql(`
+    mutation UserUpdate($input: UserUpdateInput!) {
+        userUpdate(input: $input) {
             ...CoreUserFields
         }
     }

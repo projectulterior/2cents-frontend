@@ -7,10 +7,10 @@ export default function More({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#pattern0)" />
+            <rect width="70" height="70" fill="url(#more_marked)" />
             <defs>
                 <pattern
-                    id="pattern0"
+                    id="more_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function More({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#pattern0)" />
+            <rect width="70" height="70" fill="url(#more_unmarked)" />
             <defs>
                 <pattern
-                    id="pattern0"
+                    id="more_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"

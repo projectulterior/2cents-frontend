@@ -1,5 +1,6 @@
 'use client';
 
+import './styles.css';
 import Endorsed from '@/components/svg/Endorsed';
 import Home from '@/components/svg/Home';
 import Logo from '@/components/svg/Logo';
@@ -46,7 +47,13 @@ export default function Sidebar() {
         {
             name: 'Endorsed',
             path: '/endorsed',
-            icon: <Endorsed size={size} isMarked={pathname == '/endorsed'} />,
+            icon: (
+                <Endorsed
+                    key="sidebar"
+                    size={size}
+                    isMarked={pathname == '/endorsed'}
+                />
+            ),
         },
         {
             name: 'Profile',

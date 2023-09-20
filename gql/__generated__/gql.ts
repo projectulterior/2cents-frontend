@@ -13,8 +13,10 @@ import { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-node/
  * Therefore it is highly recommended to use the babel or swc plugin for production.
  */
 const documents = {
+    "\n    fragment CorePostFields on Post {\n        id\n        author {\n            ...CoreUserFields\n        }\n        content\n        contentType\n        createdAt\n        updatedAt\n    }\n": types.CorePostFieldsFragmentDoc,
     "\n    fragment CoreUserFields on User {\n        id\n        username\n        name\n        bio\n        profile\n        cover\n    }\n": types.CoreUserFieldsFragmentDoc,
     "\n    query GetUser($userId: ID) {\n        user(id: $userId) {\n            ...CoreUserFields\n        }\n    }\n": types.GetUserDocument,
+    "\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n": types.UserUpdateDocument,
 };
 
 /**
@@ -34,11 +36,19 @@ export function gql(source: string): unknown;
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function gql(source: "\n    fragment CorePostFields on Post {\n        id\n        author {\n            ...CoreUserFields\n        }\n        content\n        contentType\n        createdAt\n        updatedAt\n    }\n"): (typeof documents)["\n    fragment CorePostFields on Post {\n        id\n        author {\n            ...CoreUserFields\n        }\n        content\n        contentType\n        createdAt\n        updatedAt\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function gql(source: "\n    fragment CoreUserFields on User {\n        id\n        username\n        name\n        bio\n        profile\n        cover\n    }\n"): (typeof documents)["\n    fragment CoreUserFields on User {\n        id\n        username\n        name\n        bio\n        profile\n        cover\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n    query GetUser($userId: ID) {\n        user(id: $userId) {\n            ...CoreUserFields\n        }\n    }\n"): (typeof documents)["\n    query GetUser($userId: ID) {\n        user(id: $userId) {\n            ...CoreUserFields\n        }\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n"): (typeof documents)["\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n"];
 
 export function gql(source: string) {
   return (documents as any)[source] ?? {};
