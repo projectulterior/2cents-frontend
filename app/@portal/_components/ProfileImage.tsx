@@ -1,5 +1,6 @@
 import { CoreUserFieldsFragment } from '@/gql/__generated__/graphql';
 import Image from 'next/image';
+import Link from 'next/link';
 import { CSSProperties } from 'react';
 
 export default function ProfileImage({
@@ -10,7 +11,8 @@ export default function ProfileImage({
     style?: CSSProperties;
 }) {
     return (
-        <div
+        <Link
+            href={`/u/${user.id}`}
             className="flex flex-row justify-start items-stretch"
             style={{
                 flex: 1,
@@ -41,6 +43,6 @@ export default function ProfileImage({
                     alt=""
                 />
             </div>
-        </div>
+        </Link>
     );
 }

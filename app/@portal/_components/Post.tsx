@@ -1,17 +1,22 @@
+import './Post.css';
 import {
     CorePostFieldsFragment,
     CoreUserFieldsFragment,
 } from '@/gql/__generated__/graphql';
 import ProfileImage from './ProfileImage';
 import Endorsed from '@/components/svg/Endorsed';
+import Link from 'next/link';
+
+const MAX_CONTENT_LENGTH = 1000;
 
 export default function Post({ post }: { post: CorePostFieldsFragment }) {
     const author: CoreUserFieldsFragment =
         post.author as CoreUserFieldsFragment;
 
     return (
-        <div
-            className="flex justify-start flex-row items-stretch p-5"
+        <Link
+            href={`/p/${post.id}`}
+            className="post flex justify-start flex-row items-stretch p-5"
             style={{ borderBottom: '1px solid lightgrey' }}
         >
             <div
@@ -27,11 +32,17 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
                     // background: 'pink',
                 }}
             >
-                <p className="">
-                    {author.name}{' '}
-                    <a style={{ fontWeight: 'bold' }}>@{author.username}</a>
+                <Link href={`/u/${author.id}`}>
+                    <p className="hover">
+                        {author.name}{' '}
+                        <a style={{ fontWeight: 'bold' }}>@{author.username}</a>
+                    </p>
+                </Link>
+                <p className="py-5">
+                    {(post.content?.length ?? 0) < MAX_CONTENT_LENGTH
+                        ? post.content
+                        : post.content?.slice(0, MAX_CONTENT_LENGTH) + ' ...'}
                 </p>
-                <p className="py-5">{post.content}</p>
                 <div
                     className="flex flex-row items-center"
                     // style={{ background: 'yellow' }}
@@ -46,6 +57,6 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
                     </div>
                 </div>
             </div>
-        </div>
+        </Link>
     );
 }
