@@ -12,8 +12,8 @@ export const CORE_USER_FIELDS = gql(`
 `);
 
 export const QUERY_GET_USER = gql(`
-    query GetUser($userId: ID) {
-        user(id: $userId) {
+    query GetUser($id: ID) {
+        user(id: $id) {
             ...CoreUserFields
         }
     }

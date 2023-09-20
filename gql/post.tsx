@@ -19,8 +19,8 @@ export const CORE_POST_FIELDS = gql(`
 `);
 
 export const QUERY_GET_POSTS = gql(`
-    query Posts($page: Pagination!) {
-        posts(page: $page) {
+    query Posts($id: ID, $page: Pagination!) {
+        posts(id: $id, page: $page) {
             posts {
                 ...CorePostFields
             }

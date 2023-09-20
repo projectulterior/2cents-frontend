@@ -6,9 +6,9 @@ import Profile from '../../_components/Profile';
 import { QUERY_GET_USER } from '@/gql/user';
 import Loading from '@/components/Loading';
 
-export default function () {
+export default function ({ params }: { params: { id: string } }) {
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_USER, {
-        variables: {},
+        variables: { id: params.id },
         errorPolicy: 'all',
     });
 

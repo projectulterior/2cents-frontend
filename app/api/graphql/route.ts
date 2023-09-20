@@ -4,7 +4,7 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function POST(request: NextRequest) {
     const body = await request.json();
 
-    console.log('graphql', body);
+    // console.log('graphql', body);
 
     return graphql(body)
         .then(async (response) => {

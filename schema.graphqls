@@ -23,7 +23,7 @@ type Query {
     """
     Returns all posts in 2cents
     """
-    posts(page: Pagination!): Posts!
+    posts(id: ID, page: Pagination!): Posts!
     """
     Returns posts created by the auth user's following
     """

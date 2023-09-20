@@ -5,11 +5,18 @@ import Loading from '@/components/Loading';
 import { CorePostFieldsFragment } from '@/gql/__generated__/graphql';
 import { ReactNode, useEffect, useRef, useState } from 'react';
 
-export default function Posts({ children }: { children?: ReactNode }) {
+export default function Posts({
+    id,
+    children,
+}: {
+    id?: string;
+    children?: ReactNode;
+}) {
     const ref = useRef<HTMLDivElement>(null);
 
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_POSTS, {
         variables: {
+            id: id,
             page: {
                 cursor: '',
                 limit: 10,
@@ -61,8 +68,10 @@ export default function Posts({ children }: { children?: ReactNode }) {
 
     const posts: CorePostFieldsFragment[] = data?.posts.posts as any;
 
+    console.log('Posts posts', posts);
+
     return (
-        <div ref={ref} style={{ overflow: 'auto' }}>
+        <div ref={ref}>
             {children}
             <div style={{}}>
                 {posts.map((post, i) => (

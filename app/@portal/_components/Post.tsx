@@ -26,7 +26,7 @@ export default function Post({ post }: { post: CorePostFieldsFragment }) {
                 <ProfileImage user={author} />
             </div>
             <div
-                className="flex flex-col px-3"
+                className="flex flex-col px-3 items-start"
                 style={{
                     flex: 9,
                     // background: 'pink',

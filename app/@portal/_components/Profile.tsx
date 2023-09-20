@@ -11,6 +11,7 @@ import { useState } from 'react';
 import Endorsed from '@/components/svg/Endorsed';
 import ProfileImage from '../_components/ProfileImage';
 import Post from '../_components/Post';
+import Posts from './Posts';
 
 const POST: any = {
     id: 'hello',
@@ -19,11 +20,13 @@ const POST: any = {
 };
 
 export default function Profile({ user }: { user: CoreUserFieldsFragment }) {
+    console.log('profile', user.id);
+
     return (
         <>
             <P user={user} />
             <Numbers user={user} />
-            <PostLists user={user} />
+            <Posts id={user.id} />
         </>
     );
 }
