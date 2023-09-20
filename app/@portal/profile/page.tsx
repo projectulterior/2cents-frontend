@@ -29,8 +29,42 @@ export default function () {
             <Header name={user.name} />
             <Profile user={user} />
             <Numbers user={user} />
-            <Posts />
+            <Posts user={user} />
         </>
+    );
+}
+
+function ProfileImage({ user }: { user: CoreUserFieldsFragment }) {
+    return (
+        <div
+            className="flex flex-1 flex-row justify-start items-stretch"
+            style={{
+                position: 'relative',
+                width: '100%',
+            }}
+        >
+            <div
+                style={{
+                    height: '100%',
+                    aspectRatio: 1 / 1,
+                    borderRadius: '1000px',
+                    position: 'absolute',
+                    borderWidth: 5,
+                    overflow: 'hidden',
+                    background: 'grey',
+                }}
+            >
+                <Image
+                    style={{
+                        objectFit: 'cover',
+                    }}
+                    fill={true}
+                    priority={true}
+                    src={user.profile ? user.profile : '/me.jpg'}
+                    alt=""
+                />
+            </div>
+        </div>
     );
 }
 
@@ -84,35 +118,7 @@ function Profile({ user }: { user: CoreUserFieldsFragment }) {
                         left: '3%',
                     }}
                 >
-                    <div
-                        className="flex flex-1 flex-row justify-start items-stretch"
-                        style={{
-                            position: 'relative',
-                            width: '100%',
-                        }}
-                    >
-                        <div
-                            style={{
-                                height: '100%',
-                                aspectRatio: 1 / 1,
-                                borderRadius: '1000px',
-                                position: 'absolute',
-                                borderWidth: 5,
-                                overflow: 'hidden',
-                                background: 'grey',
-                            }}
-                        >
-                            <Image
-                                style={{
-                                    objectFit: 'cover',
-                                }}
-                                fill={true}
-                                priority={true}
-                                src={user.profile ? user.profile : '/me.jpg'}
-                                alt=""
-                            />
-                        </div>
-                    </div>
+                    <ProfileImage user={user} />
                     <div className="flex flex-row">
                         <div className="flex flex-1 flex-col justify-start items-start">
                             <p className="text-2xl font-semibold p-2">
@@ -165,50 +171,66 @@ function Numbers({ user }: { user: CoreUserFieldsFragment }) {
     );
 }
 
-function Posts({}: {}) {
+function Posts({ user }: { user: CoreUserFieldsFragment }) {
     const [isPosts, setIsPosts] = useState(true);
 
     return (
-        <div
-            className="flex"
-            style={{
-                padding: 25,
-                margin: 25,
-                borderTop: '1px solid lightgrey',
-            }}
-        >
+        <>
             <div
-                className="flex flex-1 justify-center items-center"
+                className="flex"
                 style={{
-                    cursor: 'pointer',
+                    padding: 25,
+                    margin: 25,
+                    borderTop: '1px solid lightgrey',
                 }}
-                onClick={() => setIsPosts(true)}
             >
-                <p
+                <div
+                    className="flex flex-1 justify-center items-center"
                     style={{
-                        borderBottom: isPosts ? '1px solid #D67953' : undefined,
+                        cursor: 'pointer',
                     }}
+                    onClick={() => setIsPosts(true)}
                 >
-                    Posts
-                </p>
+                    <p
+                        style={{
+                            borderBottom: isPosts
+                                ? '1px solid #D67953'
+                                : undefined,
+                        }}
+                    >
+                        Posts
+                    </p>
+                </div>
+                <div
+                    className="flex flex-1 justify-center items-center"
+                    style={{
+                        cursor: 'pointer',
+                    }}
+                    onClick={() => setIsPosts(false)}
+                >
+                    <p
+                        style={{
+                            borderBottom: !isPosts
+                                ? '1px solid #D67953'
+                                : undefined,
+                        }}
+                    >
+                        Comments
+                    </p>
+                </div>
             </div>
             <div
-                className="flex flex-1 justify-center items-center"
-                style={{
-                    cursor: 'pointer',
-                }}
-                onClick={() => setIsPosts(false)}
+                className="flex flex-1 justify-start flex-col items-stretch"
+                style={{ background: 'blue' }}
             >
-                <p
-                    style={{
-                        borderBottom: !isPosts
-                            ? '1px solid #D67953'
-                            : undefined,
-                    }}
+                <h1>Post</h1>
+                <div
+                    className="flex flex-1 justify-start flex-col"
+                    style={{ width: 100 }}
                 >
-                    Comments
-                </p>
+                    <ProfileImage user={user} />
+                </div>
             </div>
-        </div>
+        </>
     );
 }
