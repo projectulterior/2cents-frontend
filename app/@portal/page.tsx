@@ -107,7 +107,10 @@ function CreatePost() {
                         />
                         <button
                             style={{
-                                background: '#d67953',
+                                background:
+                                    content == '' || loading
+                                        ? 'lightgrey'
+                                        : '#d67953',
                                 padding: '5px 15px 5px 15px',
                                 borderRadius: 5,
                             }}
@@ -130,7 +133,7 @@ function CreatePost() {
                                         console.error('[createPost]', err);
                                     })
                             }
-                            disabled={loading}
+                            disabled={content == '' || loading}
                         >
                             {loading ? <Loading /> : <p>Post</p>}
                         </button>
