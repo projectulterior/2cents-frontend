@@ -7,9 +7,11 @@ import SecurityKey from '@/components/svg/SecurityKey';
 import LogoutIcon from '@/components/svg/LogoutIcon';
 import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Input } from 'postcss';
 
 function Account() {
     const [isMarked, setIsMarked] = useState(false);
+    const [email, setEmail] = useState('');
 
     return (
         <ExpandableItem
@@ -17,7 +19,61 @@ function Account() {
             icon={<SecurityKey size={40} isMarked={isMarked} />}
             onChange={(isExpanded) => setIsMarked(isExpanded)}
         >
-            <h1>Expanded</h1>
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <p
+                    className="flex justify-center items-center"
+                    style={{ flex: 3, paddingLeft: 30 }}
+                >
+                    Change email address
+                </p>
+                <input
+                    key="email"
+                    className="flex justify-center items-center"
+                    style={{
+                        flex: 5,
+                        margin: '5% 10% 5% 10%',
+                        border: '2px solid orange',
+                    }}
+                />
+            </div>
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <p
+                    className="flex justify-center items-center"
+                    style={{ flex: 2.4, paddingLeft: 30 }}
+                >
+                    Change password
+                </p>
+                <input
+                    key="email"
+                    className="flex justify-center items-center"
+                    style={{
+                        flex: 5,
+                        margin: '5% 10% 5% 10%',
+                        border: '2px solid orange',
+                    }}
+                />
+            </div>
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
+            </div>
         </ExpandableItem>
     );
 }
