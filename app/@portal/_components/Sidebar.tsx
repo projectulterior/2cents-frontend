@@ -1,5 +1,6 @@
 'use client';
 
+import './styles.css';
 import Endorsed from '@/components/svg/Endorsed';
 import Home from '@/components/svg/Home';
 import Logo from '@/components/svg/Logo';
@@ -46,7 +47,13 @@ export default function Sidebar() {
         {
             name: 'Endorsed',
             path: '/endorsed',
-            icon: <Endorsed size={size} isMarked={pathname == '/endorsed'} />,
+            icon: (
+                <Endorsed
+                    key="sidebar"
+                    size={size}
+                    isMarked={pathname == '/endorsed'}
+                />
+            ),
         },
         {
             name: 'Profile',
@@ -61,12 +68,14 @@ export default function Sidebar() {
     ];
 
     return (
-        <div className="sidebar flex flex-1 flex-col items-end">
+        <div className="sidebar flex flex-1 flex-col items-end" style={{}}>
             <div
                 className="flex flex-col items-stretch px-10"
                 style={{
                     justifyContent: 'center',
                     alignItems: 'stretch',
+                    position: 'sticky',
+                    top: 0,
                 }}
             >
                 <Link

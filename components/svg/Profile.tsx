@@ -7,10 +7,10 @@ export default function Profile({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#profile)" />
+            <rect width="70" height="70" fill="url(#profile_marked)" />
             <defs>
                 <pattern
-                    id="profile"
+                    id="profile_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function Profile({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#profile)" />
+            <rect width="70" height="70" fill="url(#profile_unmarked)" />
             <defs>
                 <pattern
-                    id="profile"
+                    id="profile_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"

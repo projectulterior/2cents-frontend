@@ -18,6 +18,7 @@
         "autoprefixer": "10.4.15",
         "cookies": "^0.8.0",
         "dayjs": "^1.11.9",
+        "emoji-picker-react": "^4.5.2",
         "eslint": "8.48.0",
         "eslint-config-next": "13.4.19",
         "graphql": "^16.8.0",

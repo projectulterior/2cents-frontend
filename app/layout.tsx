@@ -1,7 +1,10 @@
+import { useQuery } from '@apollo/client';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import { cookies } from 'next/headers';
+import { QUERY_GET_USER } from '@/gql/user';
+import { graphql } from './api/graphql/route';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -10,7 +13,7 @@ export const metadata: Metadata = {
     description: "What's your 2 cents?",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
     children,
     portal,
     landing,
@@ -19,12 +22,14 @@ export default function RootLayout({
     portal: React.ReactNode;
     landing: React.ReactNode;
 }) {
-    const auth_token = cookies().get('auth_token');
+    const resp = await graphql({ query: '{ user { id } }' });
+
+    console.log('resp', resp.status);
 
     return (
         <html lang="en">
             <body className={inter.className}>
-                {auth_token ? portal : landing}
+                {resp.status == 200 ? portal : landing}
             </body>
         </html>
     );

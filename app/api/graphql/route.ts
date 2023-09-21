@@ -3,6 +3,9 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(request: NextRequest) {
     const body = await request.json();
+
+    // console.log('graphql', body);
+
     return graphql(body)
         .then(async (response) => {
             if (response.status == 401) {
@@ -18,7 +21,7 @@ export async function POST(request: NextRequest) {
         });
 }
 
-function graphql(body: any) {
+export function graphql(body: any) {
     const auth_token = cookies().get('auth_token')?.value;
 
     return fetch(`${process.env.NEXT_PUBLIC_API_URL}/graphql`, {

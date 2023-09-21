@@ -7,10 +7,10 @@ export default function Notifications({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#notifications)" />
+            <rect width="70" height="70" fill="url(#notifications_marked)" />
             <defs>
                 <pattern
-                    id="notifications"
+                    id="notifications_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function Notifications({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#notifications)" />
+            <rect width="70" height="70" fill="url(#notifications_unmarked)" />
             <defs>
                 <pattern
-                    id="notifications"
+                    id="notifications_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"

@@ -1,6 +1,5 @@
 'use client';
 
-import './styles.css';
 import Sidebar from './_components/Sidebar';
 import {
     ApolloClient,
@@ -19,7 +18,17 @@ const client = new ApolloClient({
     cache: new InMemoryCache({
         typePolicies: {
             Query: {
-                fields: {},
+                fields: {
+                    posts: {
+                        keyArgs: ['id'],
+                        merge(existing = { posts: [] }, incoming) {
+                            return {
+                                posts: [...existing.posts, ...incoming.posts],
+                                next: incoming.next,
+                            };
+                        },
+                    },
+                },
             },
         },
     }),
@@ -35,12 +44,17 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     style={{
                         flex: 3,
                         maxWidth: 1000,
+                        // background: 'black',
+                        // height: '100vh',
+                        overflow: 'hidden',
                     }}
                 >
                     {children}
                 </div>
                 <div className="sidebar flex flex-1 flex-col">
-                    <h1>hello</h1>
+                    <div style={{ position: 'sticky', top: 0 }}>
+                        <h1>hello</h1>
+                    </div>
                 </div>
             </ApolloProvider>
         </main>

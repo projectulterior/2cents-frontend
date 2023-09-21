@@ -7,10 +7,10 @@ export default function Endorsed({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#endorsed)" />
+            <rect width="70" height="70" fill="url(#endorsed_marked)" />
             <defs>
                 <pattern
-                    id="endorsed"
+                    id="endorsed_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function Endorsed({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#endorsed)" />
+            <rect width="70" height="70" fill="url(#endorsed_unmarked)" />
             <defs>
                 <pattern
-                    id="endorsed"
+                    id="endorsed_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"

@@ -17,6 +17,12 @@ export type Scalars = {
   Time: { input: any; output: any; }
 };
 
+export type AddMembersInput = {
+  channelID: Scalars['ID']['input'];
+  memberID: Scalars['ID']['input'];
+  memberIDs: Array<Scalars['ID']['input']>;
+};
+
 export type Birthday = {
   __typename?: 'Birthday';
   day: Scalars['Int']['output'];
@@ -40,9 +46,11 @@ export type Cents = {
 
 export type Channel = {
   __typename?: 'Channel';
+  createdAt?: Maybe<Scalars['Time']['output']>;
   id: Scalars['ID']['output'];
   members?: Maybe<Array<User>>;
   messages?: Maybe<Messages>;
+  updatedAt?: Maybe<Scalars['Time']['output']>;
 };
 
 
@@ -50,19 +58,49 @@ export type ChannelMessagesArgs = {
   page: Pagination;
 };
 
+export type ChannelCreateInput = {
+  memberIDs: Array<Scalars['ID']['input']>;
+};
+
+export type Channels = {
+  __typename?: 'Channels';
+  channels: Array<Channel>;
+  next?: Maybe<Scalars['String']['output']>;
+};
+
 export type Comment = {
   __typename?: 'Comment';
   author?: Maybe<User>;
+  commentLikes?: Maybe<CommentLikes>;
   content?: Maybe<Scalars['String']['output']>;
   createdAt?: Maybe<Scalars['Time']['output']>;
   id: Scalars['ID']['output'];
   post?: Maybe<Post>;
 };
 
+
+export type CommentCommentLikesArgs = {
+  page: Pagination;
+};
+
 export type CommentCreateInput = {
   content: Scalars['String']['input'];
   contentType: ContentType;
   postID: Scalars['ID']['input'];
+};
+
+export type CommentLike = {
+  __typename?: 'CommentLike';
+  comment?: Maybe<Comment>;
+  createdAt?: Maybe<Scalars['Time']['output']>;
+  id: Scalars['ID']['output'];
+  liker?: Maybe<User>;
+};
+
+export type CommentLikes = {
+  __typename?: 'CommentLikes';
+  commentLikes: Array<CommentLike>;
+  next?: Maybe<Scalars['String']['output']>;
 };
 
 export type CommentUpdateInput = {
@@ -112,10 +150,26 @@ export type Likes = {
 
 export type Message = {
   __typename?: 'Message';
+  channel: Channel;
   content?: Maybe<Scalars['String']['output']>;
   contentType?: Maybe<ContentType>;
   createdAt?: Maybe<Scalars['Time']['output']>;
+  id: Scalars['ID']['output'];
   sender?: Maybe<User>;
+};
+
+export type MessageCreateInput = {
+  channelID: Scalars['ID']['input'];
+  content?: InputMaybe<Scalars['String']['input']>;
+  contentType?: InputMaybe<ContentType>;
+  senderID: Scalars['ID']['input'];
+};
+
+export type MessageUpdateInput = {
+  content?: InputMaybe<Scalars['String']['input']>;
+  contentType?: InputMaybe<ContentType>;
+  messageID: Scalars['ID']['input'];
+  senderID: Scalars['ID']['input'];
 };
 
 export type Messages = {
@@ -126,17 +180,40 @@ export type Messages = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  channelAddMembers: Channel;
+  channelCreate: Channel;
+  channelDelete: Channel;
   commentCreate: Comment;
   commentDelete: Comment;
+  commentLike: CommentLike;
   commentUpdate: Comment;
-  likeCreate: Like;
-  likeDelete: Like;
+  messageCreate: Message;
+  messageDelete: Message;
+  messageRead: Message;
+  messageUpdate: Message;
   postCreate: Post;
   postDelete: Post;
+  postLike: Like;
   postUpdate: Post;
   userDelete: User;
   userFollow: Follow;
   userUpdate: User;
+};
+
+
+export type MutationChannelAddMembersArgs = {
+  id: Scalars['ID']['input'];
+  input: AddMembersInput;
+};
+
+
+export type MutationChannelCreateArgs = {
+  input: ChannelCreateInput;
+};
+
+
+export type MutationChannelDeleteArgs = {
+  id: Scalars['ID']['input'];
 };
 
 
@@ -150,19 +227,36 @@ export type MutationCommentDeleteArgs = {
 };
 
 
+export type MutationCommentLikeArgs = {
+  id: Scalars['ID']['input'];
+  isLike: Scalars['Boolean']['input'];
+};
+
+
 export type MutationCommentUpdateArgs = {
   id: Scalars['ID']['input'];
   input: CommentUpdateInput;
 };
 
 
-export type MutationLikeCreateArgs = {
+export type MutationMessageCreateArgs = {
+  input: MessageCreateInput;
+};
+
+
+export type MutationMessageDeleteArgs = {
   id: Scalars['ID']['input'];
 };
 
 
-export type MutationLikeDeleteArgs = {
+export type MutationMessageReadArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationMessageUpdateArgs = {
+  id: Scalars['ID']['input'];
+  input: MessageUpdateInput;
 };
 
 
@@ -173,6 +267,12 @@ export type MutationPostCreateArgs = {
 
 export type MutationPostDeleteArgs = {
   id: Scalars['ID']['input'];
+};
+
+
+export type MutationPostLikeArgs = {
+  id: Scalars['ID']['input'];
+  isLike: Scalars['Boolean']['input'];
 };
 
 
@@ -192,6 +292,11 @@ export type MutationUserUpdateArgs = {
   input: UserUpdateInput;
 };
 
+export type Notifications = {
+  __typename?: 'Notifications';
+  messages?: Maybe<Scalars['Int']['output']>;
+};
+
 export type Pagination = {
   cursor: Scalars['String']['input'];
   limit: Scalars['Int']['input'];
@@ -205,6 +310,7 @@ export type Post = {
   contentType?: Maybe<ContentType>;
   createdAt?: Maybe<Scalars['Time']['output']>;
   id: Scalars['ID']['output'];
+  like?: Maybe<Like>;
   likes?: Maybe<Likes>;
   updatedAt?: Maybe<Scalars['Time']['output']>;
   visibility?: Maybe<Visibility>;
@@ -242,13 +348,30 @@ export type Query = {
   __typename?: 'Query';
   channel: Channel;
   channelByMembers: Channel;
+  channels: Channels;
+  /** Returns the comment specified by id */
   comment: Comment;
+  commentLike: CommentLike;
+  commentLikes: CommentLikes;
+  /** Returns all comments in 2cents */
   comments: Comments;
+  follow: Follow;
+  follows: Follows;
   like: Like;
   likes: Likes;
+  messages: Messages;
+  notifications: Notifications;
+  /** Returns the post specified by id */
   post: Post;
+  /** Returns all posts in 2cents */
   posts: Posts;
+  /** Returns posts cater towards the auth user */
+  postsDiscovery: Posts;
+  /** Returns posts created by the auth user's following */
+  postsFollowing: Posts;
+  /** Returns the user specified by id. If empty, auth user */
   user: User;
+  /** Returns all users in 2cents */
   users: Users;
 };
 
@@ -263,12 +386,37 @@ export type QueryChannelByMembersArgs = {
 };
 
 
+export type QueryChannelsArgs = {
+  page: Pagination;
+};
+
+
 export type QueryCommentArgs = {
   id: Scalars['ID']['input'];
 };
 
 
+export type QueryCommentLikeArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryCommentLikesArgs = {
+  page: Pagination;
+};
+
+
 export type QueryCommentsArgs = {
+  page: Pagination;
+};
+
+
+export type QueryFollowArgs = {
+  id: Scalars['ID']['input'];
+};
+
+
+export type QueryFollowsArgs = {
   page: Pagination;
 };
 
@@ -283,12 +431,34 @@ export type QueryLikesArgs = {
 };
 
 
+export type QueryMessagesArgs = {
+  id: Scalars['ID']['input'];
+  page: Pagination;
+};
+
+
+export type QueryNotificationsArgs = {
+  page?: InputMaybe<Pagination>;
+};
+
+
 export type QueryPostArgs = {
   id: Scalars['ID']['input'];
 };
 
 
 export type QueryPostsArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
+  page: Pagination;
+};
+
+
+export type QueryPostsDiscoveryArgs = {
+  page: Pagination;
+};
+
+
+export type QueryPostsFollowingArgs = {
   page: Pagination;
 };
 
@@ -304,6 +474,7 @@ export type QueryUsersArgs = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  onChannelUpdated: Channel;
   onUserUpdated: User;
 };
 
@@ -364,10 +535,46 @@ export enum Visibility {
   Public = 'PUBLIC'
 }
 
+export type CorePostFieldsFragment = { __typename?: 'Post', id: string, content?: string | null, contentType?: ContentType | null, createdAt?: any | null, updatedAt?: any | null, author?: (
+    { __typename?: 'User' }
+    & { ' $fragmentRefs'?: { 'CoreUserFieldsFragment': CoreUserFieldsFragment } }
+  ) | null, like?: { __typename?: 'Like', id: string, createdAt?: any | null } | null } & { ' $fragmentName'?: 'CorePostFieldsFragment' };
+
+export type PostsQueryVariables = Exact<{
+  id?: InputMaybe<Scalars['ID']['input']>;
+  page: Pagination;
+}>;
+
+
+export type PostsQuery = { __typename?: 'Query', posts: { __typename?: 'Posts', next: string, posts: Array<(
+      { __typename?: 'Post' }
+      & { ' $fragmentRefs'?: { 'CorePostFieldsFragment': CorePostFieldsFragment } }
+    )> } };
+
+export type PostQueryVariables = Exact<{
+  id: Scalars['ID']['input'];
+}>;
+
+
+export type PostQuery = { __typename?: 'Query', post: (
+    { __typename?: 'Post' }
+    & { ' $fragmentRefs'?: { 'CorePostFieldsFragment': CorePostFieldsFragment } }
+  ) };
+
+export type PostCreateMutationVariables = Exact<{
+  input: PostCreateInput;
+}>;
+
+
+export type PostCreateMutation = { __typename?: 'Mutation', postCreate: (
+    { __typename?: 'Post' }
+    & { ' $fragmentRefs'?: { 'CorePostFieldsFragment': CorePostFieldsFragment } }
+  ) };
+
 export type CoreUserFieldsFragment = { __typename?: 'User', id: string, username?: string | null, name?: string | null, bio?: string | null, profile?: string | null, cover?: string | null } & { ' $fragmentName'?: 'CoreUserFieldsFragment' };
 
 export type GetUserQueryVariables = Exact<{
-  userId?: InputMaybe<Scalars['ID']['input']>;
+  id?: InputMaybe<Scalars['ID']['input']>;
 }>;
 
 
@@ -376,5 +583,20 @@ export type GetUserQuery = { __typename?: 'Query', user: (
     & { ' $fragmentRefs'?: { 'CoreUserFieldsFragment': CoreUserFieldsFragment } }
   ) };
 
+export type UserUpdateMutationVariables = Exact<{
+  input: UserUpdateInput;
+}>;
+
+
+export type UserUpdateMutation = { __typename?: 'Mutation', userUpdate: (
+    { __typename?: 'User' }
+    & { ' $fragmentRefs'?: { 'CoreUserFieldsFragment': CoreUserFieldsFragment } }
+  ) };
+
 export const CoreUserFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<CoreUserFieldsFragment, unknown>;
-export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"userId"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"userId"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
+export const CorePostFieldsFragmentDoc = {"kind":"Document","definitions":[{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CorePostFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"like"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<CorePostFieldsFragment, unknown>;
+export const PostsDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Posts"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}},{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"page"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"Pagination"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}},{"kind":"Argument","name":{"kind":"Name","value":"page"},"value":{"kind":"Variable","name":{"kind":"Name","value":"page"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"posts"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CorePostFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"next"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CorePostFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"like"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<PostsQuery, PostsQueryVariables>;
+export const PostDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"Post"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"post"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CorePostFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CorePostFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"like"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<PostQuery, PostQueryVariables>;
+export const PostCreateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"PostCreate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"PostCreateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"postCreate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CorePostFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CorePostFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"Post"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"author"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}},{"kind":"Field","name":{"kind":"Name","value":"content"}},{"kind":"Field","name":{"kind":"Name","value":"contentType"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}},{"kind":"Field","name":{"kind":"Name","value":"updatedAt"}},{"kind":"Field","name":{"kind":"Name","value":"like"},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"createdAt"}}]}}]}}]} as unknown as DocumentNode<PostCreateMutation, PostCreateMutationVariables>;
+export const GetUserDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"query","name":{"kind":"Name","value":"GetUser"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"id"}},"type":{"kind":"NamedType","name":{"kind":"Name","value":"ID"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"user"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"id"},"value":{"kind":"Variable","name":{"kind":"Name","value":"id"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<GetUserQuery, GetUserQueryVariables>;
+export const UserUpdateDocument = {"kind":"Document","definitions":[{"kind":"OperationDefinition","operation":"mutation","name":{"kind":"Name","value":"UserUpdate"},"variableDefinitions":[{"kind":"VariableDefinition","variable":{"kind":"Variable","name":{"kind":"Name","value":"input"}},"type":{"kind":"NonNullType","type":{"kind":"NamedType","name":{"kind":"Name","value":"UserUpdateInput"}}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"userUpdate"},"arguments":[{"kind":"Argument","name":{"kind":"Name","value":"input"},"value":{"kind":"Variable","name":{"kind":"Name","value":"input"}}}],"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"FragmentSpread","name":{"kind":"Name","value":"CoreUserFields"}}]}}]}},{"kind":"FragmentDefinition","name":{"kind":"Name","value":"CoreUserFields"},"typeCondition":{"kind":"NamedType","name":{"kind":"Name","value":"User"}},"selectionSet":{"kind":"SelectionSet","selections":[{"kind":"Field","name":{"kind":"Name","value":"id"}},{"kind":"Field","name":{"kind":"Name","value":"username"}},{"kind":"Field","name":{"kind":"Name","value":"name"}},{"kind":"Field","name":{"kind":"Name","value":"bio"}},{"kind":"Field","name":{"kind":"Name","value":"profile"}},{"kind":"Field","name":{"kind":"Name","value":"cover"}}]}}]} as unknown as DocumentNode<UserUpdateMutation, UserUpdateMutationVariables>;

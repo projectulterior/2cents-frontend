@@ -7,10 +7,10 @@ export default function Home({
 }) {
     return isMarked ? (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#home)" />
+            <rect width="70" height="70" fill="url(#home_marked)" />
             <defs>
                 <pattern
-                    id="home"
+                    id="home_marked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
@@ -27,10 +27,10 @@ export default function Home({
         </svg>
     ) : (
         <svg width={size} height={size} viewBox="0 0 70 70" fill="none">
-            <rect width="70" height="70" fill="url(#home)" />
+            <rect width="70" height="70" fill="url(#home_unmarked)" />
             <defs>
                 <pattern
-                    id="home"
+                    id="home_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
