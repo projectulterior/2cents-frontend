@@ -5,13 +5,75 @@ import Header from '../_components/Header';
 import MoneyBox from '@/components/svg/MoneyBox';
 import SecurityKey from '@/components/svg/SecurityKey';
 import LogoutIcon from '@/components/svg/LogoutIcon';
-import { ReactNode, useState } from 'react';
+import { ReactNode, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { Input } from 'postcss';
 
 function Account() {
+    const [isMarked, setIsMarked] = useState(false);
+    const [email, setEmail] = useState('');
+
     return (
-        <ExpandableItem name="Account" icon={<SecurityKey size={40} />}>
-            <h1>Expanded</h1>
+        <ExpandableItem
+            name="Account"
+            icon={<SecurityKey size={40} isMarked={isMarked} />}
+            onChange={(isExpanded) => setIsMarked(isExpanded)}
+        >
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <p
+                    className="flex justify-center items-center"
+                    style={{ flex: 3, paddingLeft: 30 }}
+                >
+                    Change email address
+                </p>
+                <input
+                    key="email"
+                    className="flex justify-center items-center"
+                    style={{
+                        flex: 5,
+                        margin: '5% 10% 5% 10%',
+                        border: '2px solid orange',
+                    }}
+                />
+            </div>
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <p
+                    className="flex justify-center items-center"
+                    style={{ flex: 2.4, paddingLeft: 30 }}
+                >
+                    Change password
+                </p>
+                <input
+                    key="email"
+                    className="flex justify-center items-center"
+                    style={{
+                        flex: 5,
+                        margin: '5% 10% 5% 10%',
+                        border: '2px solid orange',
+                    }}
+                />
+            </div>
+            <div
+                className="flex flex-row justify-left items-center"
+                style={{
+                    borderBottom: '1px solid lightgrey',
+                    height: 70,
+                }}
+            >
+                <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
+            </div>
         </ExpandableItem>
     );
 }
@@ -39,8 +101,14 @@ function Logout() {
 }
 
 function Funds() {
+    const [isMarked, setIsMarked] = useState(false);
+
     return (
-        <ExpandableItem name="Funds" icon={<MoneyBox size={40} />}>
+        <ExpandableItem
+            name="Funds"
+            icon={<MoneyBox size={40} isMarked={isMarked} />}
+            onChange={(isExpanded) => setIsMarked(isExpanded)}
+        >
             <h1>Expanded</h1>
         </ExpandableItem>
     );
@@ -79,19 +147,27 @@ function ExpandableItem({
     name,
     icon,
     children,
+    onChange,
 }: {
     name: string;
     icon: ReactNode;
     children: ReactNode;
+    onChange?: (isExpanded: boolean) => void;
 }) {
-    const [isExpanded, setIsExpected] = useState(false);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    useEffect(() => {
+        if (onChange) {
+            onChange(isExpanded);
+        }
+    }, [isExpanded]);
 
     return (
         <>
             <Item
                 name={name}
                 icon={icon}
-                onClick={() => setIsExpected(!isExpanded)}
+                onClick={() => setIsExpanded(!isExpanded)}
             />
             {isExpanded ? children : null}
         </>

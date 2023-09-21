@@ -1,5 +1,11 @@
-export default function SecurityKey({ size }: { size: number }) {
-    return (
+export default function SecurityKey({
+    size,
+    isMarked,
+}: {
+    size: number;
+    isMarked: boolean;
+}) {
+    return isMarked ? (
         <svg
             width={size}
             height={size}
@@ -8,10 +14,37 @@ export default function SecurityKey({ size }: { size: number }) {
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
         >
-            <rect width="55" height="55" fill="url(#securitykey)" />
+            <rect width="55" height="55" fill="url(#securitykey_marked)" />
             <defs>
                 <pattern
-                    id="securitykey"
+                    id="securitykey_marked"
+                    patternContentUnits="objectBoundingBox"
+                    width="1"
+                    height="1"
+                >
+                    <use xlinkHref="#image0_708_2423" transform="scale(0.01)" />
+                </pattern>
+                <image
+                    id="image0_708_2423"
+                    width="100"
+                    height="100"
+                    xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAADrklEQVR4nO3cN4hUQRzH8a8ZjCgGPMxiVjwQTKCFYGdAxUIQRRFTJRZWCipiJxgLtREVY2MhKNiZQMXGxpzwOAyY051pZHAO1nS7O7tv3+y83wf+cIgct/8fb2fnv/MeiIiIiIiIiIiIiIiUS39gKbAHOAvcAl7l1F3gAnAEWAdMAVqr/eXVB9gA3AaMR70B9gO1CqY0Q4DjwDfPIMw/6iIwW8EUpxOwG/hSxiDMH3UaGKBg8psM3EswCJNTH4E1CuX/lgNfKxSGySm7vrRRML/blEIQJqfOAV0Uyi8bUw7DuDoPtMt6KMsCCMLk1FGgBRk1PqU1w+Sp9WRQe7fLNgHW1yxuIrcF0HjTTF0GWpIRdkPWEEDTTZ5aQUYcCKDZpoB6CLQicj2ARs8G2atqBzAB6ODK/rwzwSsu+rnXWs/G1AFjm/m9te7/JLFhjNp1zyujuTByQyn3lfID6EukugPfPZpi36YKtSuBq8TO2KI037MhdgNZqIkJBHKYSG31bEjHIr9LMWUuu4GN0okKBNI5gUAaY51vXavStywDdCNCvrMru89Ic1E3wAgidN+zGQ0FDvtqS9h05qvRROhBCQ2pyxNKbUIbw6YaTISulNiURveWNNEt9LYmuX9L6spoqhoidCrhppmEqjHW0487Amiu8agbRGpJAM01HnWMSA0LoLnGo1YRsVI+aaVV/YjY5gAabIqom0SuJuFD1CaB70NWE7mTATTaFBnKSiI23vOLqjTrO7CYiO0NoMmmyLI3Di0kUvakeX2VhrKASM1z78+myuoLMJdIbQigwcYzlFlEqlpOMpp/DB1nEqG27r5yU4X1GZhOhFq4O6mqcU35BEwjUouAdwE02RRZH4CpRKo3cDCAJhuF8rsZwNUAGm2KqLfuRH7U7As8VMJB6m/AJeB9hUJ5DYwjA+yhhjnAdvfMkvr/PAfltQtgn1uT7CFvXJMqNR14mcX7FHH3AfZyXyJ1LeDYaX/3GKdKhPICGJPn7xF+PWerUmvKc2CUut68LRUMxNYzYGSevynT5lQ4EFtPgeFpv/BQ9UshEFtPgEFpv/hQPU8plMfAwLRffIjOpBSIrUfu056kuLD/WXdiPcDta2bKgTSd+WratGZeO/fojLRDsUNUcYa6TeKnFAOxUwPxeD7LjQRDEQ89E5yBSWAzMAnso7IENgOTwGZgEtgMTAKbgUlgC7sENAOzjwORgGZg9qFuEsAMrM6FYQ+ai4iIiIiIiIiIiIiICH/7Cd0sY6G5HrkmAAAAAElFTkSuQmCC"
+                />
+            </defs>
+        </svg>
+    ) : (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 55 55"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
+            <rect width="55" height="55" fill="url(#securitykey_unmarked)" />
+            <defs>
+                <pattern
+                    id="securitykey_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
