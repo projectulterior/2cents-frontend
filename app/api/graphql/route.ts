@@ -25,6 +25,7 @@ export function graphql(body: any) {
     const auth_token = cookies().get('auth_token')?.value;
 
     return fetch(`${process.env.NEXT_PUBLIC_API_URL}/graphql`, {
+        cache: 'no-store',
         method: 'POST',
         headers: {
             Authorization: auth_token ?? '',

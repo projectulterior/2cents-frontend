@@ -25,30 +25,42 @@ export default function Posts({
         errorPolicy: 'all',
     });
 
-    const [height, setHeight] = useState(0);
-    const [scroll, setScroll] = useState(0);
-    const [offset, setOffset] = useState(0);
+    type Scroll = { scroll: number; height: number; offset: number };
+    const [scroll, setScroll] = useState<Scroll>({
+        scroll: -1,
+        offset: -1,
+        height: 0,
+    });
 
     useEffect(() => {
-        function scroll(e: any) {
-            const offset = ref.current?.scrollTop ?? 0;
-            const height = ref.current?.scrollHeight ?? 0;
-            const scrollY = e.currentTarget.scrollY;
+        function onScroll(e: any) {
+            const scroll = e.currentTarget.scrollY;
+            const offset = e.currentTarget.innerHeight;
+            const height = document.body.scrollHeight;
 
-            setHeight(height);
-            setScroll(scrollY);
-            setOffset(offset);
+            setScroll({
+                height,
+                scroll,
+                offset,
+            });
 
-            console.log({ offset, height, scrollY });
-            console.log('ref', offset + scrollY, height);
+            console.log({
+                scroll,
+                offset,
+                height,
+            });
         }
 
-        window.addEventListener('scroll', scroll);
-        return () => window.removeEventListener('scroll', scroll);
+        window.addEventListener('scroll', onScroll);
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
     useEffect(() => {
-        if (offset + scroll >= height - 1500 && !loading && data?.posts.next) {
+        if (
+            scroll.offset + scroll.scroll >= scroll.height &&
+            !loading &&
+            data?.posts.next
+        ) {
             fetchMore({
                 variables: {
                     page: { cursor: data?.posts.next, limit: 10 },
@@ -56,19 +68,17 @@ export default function Posts({
             });
             console.log('next', data?.posts.next);
         }
-    }, [loading, offset, height, scroll]);
+    }, [loading, scroll]);
 
     if (loading) {
         return <Loading />;
     }
 
     if (error) {
-        console.error('[Posts]', error);
+        // console.error('[Posts]', error);
     }
 
     const posts: CorePostFieldsFragment[] = data?.posts.posts as any;
-
-    console.log('Posts posts', posts);
 
     return (
         <div ref={ref}>

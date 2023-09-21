@@ -19,7 +19,7 @@ export default function ({ params }: { params: { id: string } }) {
     return (
         <>
             <Header name="Post" isBack />
-            <div style={{ overflow: 'scroll' }}>
+            <div style={{}}>
                 <Post post={post} />
             </div>
         </>
