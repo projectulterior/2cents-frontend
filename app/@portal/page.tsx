@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import Sidebar from './_components/Sidebar';
 import Header from './_components/Header';
+import { useQuery } from '@apollo/client';
 
 export default function () {
     return (
         <>
             <Header name="Home" />
             <CreatePost />
+            <h1>br is not str</h1>
         </>
     );
 }
