@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CSSProperties, ReactNode, useState } from 'react';
 
 import DatePicker from 'react-datepicker';
+import Datepicker from 'react-tailwindcss-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
 export default function CreateAccount() {
@@ -13,7 +14,15 @@ export default function CreateAccount() {
 
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
-    const [birthday, setBirthday] = useState<Date | null>(new Date());
+    const [birthday, setBirthday] = useState({
+        startDate: null,
+        endDate: null,
+    });
+
+    const handleValueChange = (newValue: any) => {
+        console.log('newValue:', newValue);
+        setBirthday(newValue);
+    };
 
     return (
         <>
@@ -76,10 +85,13 @@ export default function CreateAccount() {
                                 <p className="text-2xl font-bold m-3">
                                     Date of Birth
                                 </p>
-                                <DatePicker
-                                    selected={birthday}
-                                    onChange={(date) => setBirthday(date)}
+                                <Datepicker
+                                    useRange={false}
+                                    asSingle
+                                    value={birthday}
+                                    onChange={(date: any) => setBirthday(date)}
                                 />
+                                <input type="date" />
                             </div>
                             <button
                                 className="div-accent p-2 my-3 rounded-lg px-10"
