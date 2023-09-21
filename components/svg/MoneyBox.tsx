@@ -1,5 +1,11 @@
-export default function MoneyBox({ size }: { size: number }) {
-    return (
+export default function MoneyBox({
+    size,
+    isMarked,
+}: {
+    size: number;
+    isMarked: boolean;
+}) {
+    return isMarked ? (
         <svg
             width={size}
             height={size}
@@ -8,10 +14,37 @@ export default function MoneyBox({ size }: { size: number }) {
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
         >
-            <rect width="55" height="55" fill="url(#moneybox)" />
+            <rect width="55" height="55" fill="url(#moneybox_marked)" />
             <defs>
                 <pattern
-                    id="moneybox"
+                    id="moneybox_marked"
+                    patternContentUnits="objectBoundingBox"
+                    width="1"
+                    height="1"
+                >
+                    <use xlinkHref="#image0_708_2192" transform="scale(0.01)" />
+                </pattern>
+                <image
+                    id="image0_708_2192"
+                    width="100"
+                    height="100"
+                    xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGQAAABkCAYAAABw4pVUAAAACXBIWXMAAAsTAAALEwEAmpwYAAAE5ElEQVR4nO2dWaiVVRTHf3WbqSQLoqgomixosGgiiNIXo56CiCYraIIGiMqGF6mXDJIm8iEwIn0wicImzKQo0R4irCjCzEyIiqwsU+uWumLDunGVc8/0rf2dtc+3fvB/ufee/e29/mcP354uBEEQBEEQBEEQBEEQBEEQBEE/nAw8ACwHvgK2AFuB9cC7wEPAaRHa/JwDvAdIl1oGXBjG2LM3MA/Y2YMZotoBPAnsF8bYMBl4vw8jZDelmnVgmFK9ZliYIaoPNc2gT+YZmiGqJ2p241DgeuAF4DPgR+Av4GYK7MD76TOkg1KaZ9eQ/6nAQg1+q3wkg4qil9FUr1qaMd9HAAt0MNEuD0UZMiWjGaI6PkO+rwV+6/L5RRnyYA2GzDLM717AnB6fX5QhyzMYsAP4GHgMuEyH0xYcALzTR36KMmSNkQmjwBvATOCwcekfAkwH7gbmAouBVcBqYB3wPbAB+AL4SN/4FwGPAzfogCO90xysQ2kZdkM2VzTic+AuDXzicB16LtT5LqvR2h8VPl+UIX/2GaC3gIs0jVQj7tBveI7hc1UVZcg3PRbubeBM/ey52gT94yDoQ2PIsi4Lld58L9HPTAM+cBDooTTk/g6F2abrIWle6hTtuAcdYBlmQ6a0afdXqwn7AI8W0DTJMBiSWNKiEM8B+wKna3MlBetFCuMsYLtmPtWC2/Xn1+lyrRSuUX0PKorZGvwZwJ668idDpsX6glkEI8AZOle0wEHwJJPWaDNcBMmM1xwETTIrjRxvxDl7APMdBEtq1Es6YemSRxwESAagT4ETccaMLlbdhlmbgatwwpHAzw6CIg70lIedMq86CIQ4UlpYO25QZlzqIABSUV/qNp8LgCuMRokbNT0z0pDu9w6JjhiuFsqAlJaf9+9jwrQbpQWxY6wMWaGJXt7mb652EFCpOB1yVJvyrTR4xvNWhmzSBCe3eecofcJwRYcY3GPwjLTeb8I2TbBVdU6c7yCgUlGvd9FsV31GehUwYaxvmGgb57MOAioVtU5r+kTMNXqOCc+0aQNTIX5yEFAx0C0TlP/YPjdvZDPkBF3XSFXuyt1+d6qDQIqRUtBvanEEz7J/NOM+TXC7Vt+j9ee3OQikGCudfXxFO/qxhTZ3hiQeHjdHldbNfxg3AgtRvyHoHqqXDdvUpikbIzqRaLW9Uxqi7Gx0UEgpSNn51UEhpSCFITTMkG6PgYWox5AY9uKrhqR1kvj2E4ZIoV+E7FQ5GtZEZScMoWsz0gSt+0OeTdLaMARXSufssxOTjHRlxrfApDoM2eLgmyfO9cm49aPsDMOJKMnYic/RM5W1MbYjJcQuMVipB1xrZ6JLvpqqrXrsOx3jGwhhCLvcSmG2XTQMoe9a8YtegOaCUQfNhAxY9+KIMIT/L89xQanXY4hhczWwDrwV/zoIigxQaUuUK5puyK04w3qrpRSmHFfWVqLJx5834JAmGzIfh3i8pFJq0jU03JBNug+sk+rIy069K94d1gVdr9cE5tgcfqdhPtNFzS6x3pc1LWNeJxnm82mcstSwkEtqyK9VkzZ26bM7phv1I9/pf7TJzSKjxSfXzKpoSjqSfFJNeZ1acQ1nrR5Ucs/FwJs9NAlpyuVrvb/3oJrzep7+E8tu8/q3Xkw2ewB5DYIgCIIgCIIgCIIgCAI88h+Mta0bKVMekAAAAABJRU5ErkJggg=="
+                />
+            </defs>
+        </svg>
+    ) : (
+        <svg
+            width={size}
+            height={size}
+            viewBox="0 0 55 55"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlnsXlink="http://www.w3.org/1999/xlink"
+        >
+            <rect width="55" height="55" fill="url(#moneybox_unmarked)" />
+            <defs>
+                <pattern
+                    id="moneybox_unmarked"
                     patternContentUnits="objectBoundingBox"
                     width="1"
                     height="1"
