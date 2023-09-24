@@ -4,8 +4,10 @@ export const CORE_USER_FIELDS = gql(`
     fragment CoreUserFields on User {
         id
         username
+        password
         name
         bio
+        email
         profile
         cover
     }

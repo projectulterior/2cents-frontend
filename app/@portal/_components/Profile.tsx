@@ -122,6 +122,7 @@ function Info({ user }: { user: CoreUserFieldsFragment }) {
                 <p>Cypress, CA</p>
                 <p>Joined September 2023</p>
                 <p>pornhub.com/sbk</p>
+                <p>{user.email}</p>
             </div>
         </div>
     );
