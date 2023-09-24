@@ -20,21 +20,10 @@ const POST: any = {
 };
 
 export default function Profile({ user }: { user: CoreUserFieldsFragment }) {
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    console.log('profile', user.id);
-
     return (
         <>
-            {isExpanded ? (
-                <>
-                    <P user={user} />
-                    <Numbers user={user} />
-                </>
-            ) : null}
-            <button onClick={() => setIsExpanded(!isExpanded)}>
-                <h1>Expand</h1>
-            </button>
+            <P user={user} />
+            <Numbers user={user} />
             <Posts id={user.id} />
         </>
     );
