@@ -149,6 +149,7 @@ function Logout() {
                         }
 
                         router.push('/');
+                        router.refresh();
                     })
                     .catch((err) => console.error(err));
             }}
