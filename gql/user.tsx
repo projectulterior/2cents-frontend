@@ -6,6 +6,7 @@ export const CORE_USER_FIELDS = gql(`
         username
         name
         bio
+        email
         profile
         cover
     }

@@ -23,6 +23,10 @@ body {
     overflow: auto;
 }
 
+textarea:focus {
+    outline: black solid 1px;
+}
+
 .text-accent {
     color: #d67953;
 }
