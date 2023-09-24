@@ -20,8 +20,6 @@ const POST: any = {
 };
 
 export default function Profile({ user }: { user: CoreUserFieldsFragment }) {
-    console.log('profile', user.id);
-
     return (
         <>
             <P user={user} />

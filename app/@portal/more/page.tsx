@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from 'postcss';
 import { useMutation, useQuery } from '@apollo/client';
-import { MUTATION_PASSWORD_UPDATE, QUERY_GET_USER } from '@/gql/user';
+import { QUERY_GET_USER } from '@/gql/user';
 import { MUTATION_USER_UPDATE } from '@/gql/user';
 import {
     CoreUserFieldsFragment,
@@ -218,6 +218,7 @@ function Logout() {
                         }
 
                         router.push('/');
+                        router.refresh();
                     })
                     .catch((err) => console.error(err));
             }}

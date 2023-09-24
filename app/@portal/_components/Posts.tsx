@@ -44,11 +44,11 @@ export default function Posts({
                 offset,
             });
 
-            console.log({
-                scroll,
-                offset,
-                height,
-            });
+            // console.log({
+            //     scroll,
+            //     offset,
+            //     height,
+            // });
         }
 
         window.addEventListener('scroll', onScroll);
@@ -83,11 +83,9 @@ export default function Posts({
     return (
         <div ref={ref}>
             {children}
-            <div style={{}}>
-                {posts.map((post, i) => (
-                    <Post key={i} post={post} />
-                ))}
-            </div>
+            {posts.map((post, i) => (
+                <Post key={i} post={post} />
+            ))}
         </div>
     );
 }

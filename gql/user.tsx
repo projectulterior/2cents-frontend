@@ -28,8 +28,13 @@ export const MUTATION_USER_UPDATE = gql(`
     }
 `);
 
-export const MUTATION_PASSWORD_UPDATE = gql(`
-    mutation PasswordUpdate($old: String!, $new: String!) {
-        passwordUpdate(old: $old, new: $new)
+export const QUERY_SEARCH_USERS = gql(`
+    query SearchUsers($query: String!, $page: Pagination!) {
+        searchUsers(query: $query, page: $page) {
+            next
+            users {
+                ...CoreUserFields
+            }
+        }
     }
 `);

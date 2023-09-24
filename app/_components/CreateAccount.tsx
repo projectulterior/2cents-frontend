@@ -4,7 +4,7 @@ import { withAuth } from '@/src/auth/verifyAuth';
 import { useRouter } from 'next/navigation';
 import { CSSProperties, ReactNode, useState } from 'react';
 
-import DatePicker from 'react-datepicker';
+import DatePicker from 'react-datepicker'; ///
 import Datepicker from 'react-tailwindcss-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 
@@ -102,7 +102,13 @@ export default function CreateAccount() {
                             </button>
                         </div>
                     ) : page == 1 ? (
-                        <SignUp />
+                        <>
+                            <p className="text-3xl font-bold mb-10">
+                                Make your login
+                            </p>
+
+                            <SignUp />
+                        </>
                     ) : null}
                 </Modal>
             ) : null}
@@ -110,7 +116,7 @@ export default function CreateAccount() {
     );
 }
 
-function SignUp() {
+export function SignUp({ label }: { label?: string }) {
     const router = useRouter();
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
@@ -131,7 +137,6 @@ function SignUp() {
                 flexDirection: 'column',
             }}
         >
-            <p className="text-3xl font-bold mb-10">Make your login</p>
             <input
                 key="username"
                 className="text-xl"
@@ -166,7 +171,9 @@ function SignUp() {
                 className="div-accent p-2 my-3 rounded-lg px-10"
                 onClick={handleSignUp}
             >
-                <p className="text-white font-medium">Sign Up</p>
+                <p className="text-white font-medium">
+                    {label ? label : 'Sign Up'}
+                </p>
             </button>
         </div>
     );

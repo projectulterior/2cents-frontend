@@ -13,7 +13,6 @@ import {
     Visibility,
 } from '@/gql/__generated__/graphql';
 import Loading from '@/components/Loading';
-import Post from '../_components/Post';
 import Posts from '../_components/Posts';
 import { MUTATION_CREATE_POST } from '@/gql/post';
 import Emoji from '../_components/Emoji';
@@ -59,6 +58,25 @@ function CreatePost() {
         },
     );
 
+    const handleCreate = () =>
+        create({
+            variables: {
+                input: {
+                    content: content,
+                    contentType: ContentType.Text,
+                    visibility: Visibility.Public,
+                },
+            },
+        })
+            .then((data) => {
+                console.log('[createPost]', data);
+                // reset();
+                setContent('');
+            })
+            .catch((err) => {
+                console.error('[createPost]', err);
+            });
+
     return (
         <div
             className="flex flex-col justify-start items-stretch px-3 mt-10"
@@ -92,6 +110,16 @@ function CreatePost() {
                             overflow: 'hidden',
                         }}
                         rows={1}
+                        onKeyDown={(e) => {
+                            if (e.key == 'Enter' && !content) {
+                                e.preventDefault();
+                            }
+
+                            if (e.key == 'Enter' && !e.shiftKey && content) {
+                                e.preventDefault();
+                                handleCreate();
+                            }
+                        }}
                         onChange={(e) => {
                             console.log('onChange', e.target.value);
                             setContent(e.target.value);
@@ -114,25 +142,7 @@ function CreatePost() {
                                 padding: '5px 15px 5px 15px',
                                 borderRadius: 5,
                             }}
-                            onClick={() =>
-                                create({
-                                    variables: {
-                                        input: {
-                                            content: content,
-                                            contentType: ContentType.Text,
-                                            visibility: Visibility.Public,
-                                        },
-                                    },
-                                })
-                                    .then((data) => {
-                                        console.log('[createPost]', data);
-                                        // reset();
-                                        setContent('');
-                                    })
-                                    .catch((err) => {
-                                        console.error('[createPost]', err);
-                                    })
-                            }
+                            onClick={handleCreate}
                             disabled={content == '' || loading}
                         >
                             {loading ? <Loading /> : <p>Post</p>}

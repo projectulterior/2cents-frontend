@@ -8,6 +8,7 @@ import Messages from '@/components/svg/Messages';
 import More from '@/components/svg/More';
 import Notifications from '@/components/svg/Notifications';
 import Profile from '@/components/svg/Profile';
+import Search from '@/components/svg/Search';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { ReactNode } from 'react';
@@ -19,7 +20,8 @@ type Tab = {
 };
 
 export default function Sidebar() {
-    const pathname = usePathname();
+    const pathname = usePathname().split('/')[1];
+    console.log('pathname', pathname);
 
     const size = 50;
 
@@ -27,7 +29,12 @@ export default function Sidebar() {
         {
             name: 'Home',
             path: '/',
-            icon: <Home size={size} isMarked={pathname == '/'} />,
+            icon: <Home size={size} isMarked={pathname == ''} />,
+        },
+        {
+            name: 'Search',
+            path: '/search',
+            icon: <Search size={size - 15} isMarked={pathname == 'search'} />,
         },
         {
             name: 'Notifications',
@@ -35,14 +42,14 @@ export default function Sidebar() {
             icon: (
                 <Notifications
                     size={size}
-                    isMarked={pathname == '/notifications'}
+                    isMarked={pathname == 'notifications'}
                 />
             ),
         },
         {
             name: 'Messages',
             path: '/messages',
-            icon: <Messages size={size} isMarked={pathname == '/messages'} />,
+            icon: <Messages size={size} isMarked={pathname == 'messages'} />,
         },
         {
             name: 'Endorsed',
@@ -51,19 +58,19 @@ export default function Sidebar() {
                 <Endorsed
                     key="sidebar"
                     size={size}
-                    isMarked={pathname == '/endorsed'}
+                    isMarked={pathname == 'endorsed'}
                 />
             ),
         },
         {
             name: 'Profile',
             path: '/profile',
-            icon: <Profile size={size} isMarked={pathname == '/profile'} />,
+            icon: <Profile size={size} isMarked={pathname == 'profile'} />,
         },
         {
             name: 'More',
             path: '/more',
-            icon: <More size={size} isMarked={pathname == '/more'} />,
+            icon: <More size={size} isMarked={pathname == 'more'} />,
         },
     ];
 
