@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from 'postcss';
 import { useMutation, useQuery } from '@apollo/client';
-import { QUERY_GET_USER } from '@/gql/user';
+import { MUTATION_PASSWORD_UPDATE, QUERY_GET_USER } from '@/gql/user';
 import { MUTATION_USER_UPDATE } from '@/gql/user';
 import {
     CoreUserFieldsFragment,
@@ -29,29 +29,8 @@ function Account() {
             onChange={(isExpanded) => setIsMarked(isExpanded)}
         >
             <UpdateEmail />
-            <div
-                className="flex flex-row justify-left items-center"
-                style={{
-                    borderBottom: '1px solid lightgrey',
-                    height: 70,
-                }}
-            >
-                <p
-                    className="flex justify-left items-left"
-                    style={{ flex: 2.4, paddingLeft: 30 }}
-                >
-                    Change password
-                </p>
-                <input
-                    key="email"
-                    className="flex justify-center items-center"
-                    style={{
-                        flex: 5,
-                        margin: '5% 10% 5% 10%',
-                        border: '2px solid orange',
-                    }}
-                />
-            </div>
+            <UpdatePassword />
+
             <div
                 className="flex flex-row justify-left items-center"
                 style={{
@@ -127,6 +106,96 @@ function UpdateEmail() {
                         })
                 }
                 disabled={email == '' || loading}
+            >
+                {loading ? <Loading /> : <p>Confirm</p>}
+            </button>
+        </div>
+    );
+}
+
+function UpdatePassword() {
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [update, { data, loading, error, reset }] = useMutation(
+        MUTATION_PASSWORD_UPDATE,
+        {
+            errorPolicy: 'all',
+        },
+    );
+
+    return (
+        <div
+            className="flex flex-row justify-left items-center"
+            style={{
+                borderBottom: '1px solid lightgrey',
+                height: 70,
+            }}
+        >
+            <p
+                className="flex justify-left items-left"
+                style={{ flex: 2.4, paddingLeft: 30 }}
+            >
+                Change password
+            </p>
+            <input
+                key="email"
+                className="flex justify-center items-center"
+                style={{
+                    flex: 5,
+                    margin: '5% 10% 5% 10%',
+                    border: '2px solid orange',
+                }}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setOldPassword(e.target.value);
+                }}
+                value={oldPassword}
+            />
+
+            <input
+                key="email"
+                className="flex justify-center items-center"
+                style={{
+                    flex: 5,
+                    margin: '5% 10% 5% 10%',
+                    border: '2px solid orange',
+                }}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setNewPassword(e.target.value);
+                }}
+                value={newPassword}
+            />
+
+            <button
+                style={{
+                    background:
+                        oldPassword == '' || newPassword == '' || loading
+                            ? 'lightgrey'
+                            : '#d67953',
+                    padding: '5ps 15px 5px 15px',
+                    borderRadius: 5,
+                }}
+                onClick={() =>
+                    update({
+                        variables: {
+                            old: oldPassword,
+                            new: newPassword,
+                        },
+                    })
+                        .then((data) => {
+                            console.log('[updatePassword]', data);
+                            setOldPassword('');
+                        })
+                        .then((data) => {
+                            console.log('[updatePassword]', data);
+                            setNewPassword('');
+                        })
+                        .catch((err) => {
+                            console.error('[updatePassword]', err);
+                        })
+                }
+                disabled={oldPassword == '' || newPassword == '' || loading}
             >
                 {loading ? <Loading /> : <p>Confirm</p>}
             </button>

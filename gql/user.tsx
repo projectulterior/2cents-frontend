@@ -4,7 +4,6 @@ export const CORE_USER_FIELDS = gql(`
     fragment CoreUserFields on User {
         id
         username
-        password
         name
         bio
         email
@@ -26,5 +25,11 @@ export const MUTATION_USER_UPDATE = gql(`
         userUpdate(input: $input) {
             ...CoreUserFields
         }
+    }
+`);
+
+export const MUTATION_PASSWORD_UPDATE = gql(`
+    mutation PasswordUpdate($old: String!, $new: String!) {
+        passwordUpdate(old: $old, new: $new)
     }
 `);
