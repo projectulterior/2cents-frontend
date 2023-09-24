@@ -83,11 +83,9 @@ export default function Posts({
     return (
         <div ref={ref}>
             {children}
-            <div style={{}}>
-                {posts.map((post, i) => (
-                    <Post key={i} post={post} />
-                ))}
-            </div>
+            {posts.map((post, i) => (
+                <Post key={i} post={post} />
+            ))}
         </div>
     );
 }

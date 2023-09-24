@@ -1,5 +1,5 @@
 import Logo from '@/components/svg/Logo';
-import CreateAccount from '../_components/CreateAccount';
+import CreateAccount, { SignUp } from '../_components/CreateAccount';
 
 export default function Landing() {
     return (
@@ -19,15 +19,13 @@ export default function Landing() {
                     <p className="text-3xl font-bold">
                         Share your <a className="text-accent">2cents</a> today.
                     </p>
-                    <CreateAccount />
+                    <SignUp label="Sign In" />
                 </div>
                 <div className="flex flex-1 flex-col justify-start items-start ">
                     <p className="text-2xl font-medium">
-                        Already have an account?
+                        Don't have an account?
                     </p>
-                    <button className="p-2 my-3 rounded-lg px-10 border-solid border-2">
-                        <p className="font-medium">Sign In</p>
-                    </button>
+                    <CreateAccount />
                 </div>
             </div>
         </main>
