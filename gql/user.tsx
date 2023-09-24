@@ -26,3 +26,14 @@ export const MUTATION_USER_UPDATE = gql(`
         }
     }
 `);
+
+export const QUERY_SEARCH_USERS = gql(`
+    query SearchUsers($query: String!, $page: Pagination!) {
+        searchUsers(query: $query, page: $page) {
+            next
+            users {
+                ...CoreUserFields
+            }
+        }
+    }
+`);

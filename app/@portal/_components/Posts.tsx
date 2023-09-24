@@ -44,11 +44,11 @@ export default function Posts({
                 offset,
             });
 
-            console.log({
-                scroll,
-                offset,
-                height,
-            });
+            // console.log({
+            //     scroll,
+            //     offset,
+            //     height,
+            // });
         }
 
         window.addEventListener('scroll', onScroll);

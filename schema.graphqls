@@ -59,6 +59,8 @@ type Query {
     messages(id: ID!, page: Pagination!): Messages!
 
     notifications(page: Pagination): Notifications!
+
+    searchUsers(query: String!, page: Pagination!): Users!
 }
 
 type Mutation {
