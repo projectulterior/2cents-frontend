@@ -10,7 +10,7 @@ import { useRouter } from 'next/navigation';
 import { Input } from 'postcss';
 import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_GET_USER } from '@/gql/user';
-import { MUTATION_USER_UPDATE } from '@/gql/user';
+import { MUTATION_PASSWORD_UPDATE, MUTATION_USER_UPDATE } from '@/gql/user';
 import {
     CoreUserFieldsFragment,
     CoreUserFieldsFragmentDoc,
