@@ -1,30 +1,124 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Header from '../../_components/Header';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { QUERY_SEARCH_USERS } from '@/gql/user';
 import Loading from '@/components/Loading';
-import { CoreUserFieldsFragment } from '@/gql/__generated__/graphql';
+import {
+    ContentType,
+    CoreChannelFieldsFragment,
+    CoreMessageFieldsFragment,
+    CoreMessageFieldsFragmentDoc,
+    CoreUserFieldsFragment,
+    Visibility,
+} from '@/gql/__generated__/graphql';
 import ProfileImage from '../../_components/ProfileImage';
+import Emoji from '../../_components/Emoji';
+import Profile from '@/components/svg/Profile';
+import { useAutosizeTextArea } from '../../(home)/page';
+import {
+    MUTATION_CREATE_CHANNEL,
+    MUTATION_CREATE_MESSAGE,
+    QUERY_GET_CHANNEL_BY_MEMBERS,
+} from '@/gql/channel';
+import { client } from '../../layout';
+import { Message, NewMessage } from '../_components/Messages';
 
 export default function () {
+    const [members, setMembers] = useState<CoreUserFieldsFragment[]>([]);
+
+    const { loading, data, error, refetch } = useQuery(
+        QUERY_GET_CHANNEL_BY_MEMBERS,
+        {
+            variables: {
+                members: members.map((user, i) => user.id),
+                messagesPage: {
+                    cursor: '',
+                    limit: 10,
+                },
+            },
+            // errorPolicy: 'all',
+        },
+    );
+
+    useEffect(() => {
+        refetch({ members: members.map((user) => user.id) });
+    }, [members]);
+
+    const channel: CoreChannelFieldsFragment = data?.channelByMembers as any;
+
+    const ensureChannel = async (): Promise<string> => {
+        if (!channel) {
+            const resp = await client.mutate({
+                mutation: MUTATION_CREATE_CHANNEL,
+                variables: {
+                    input: { memberIDs: members.map((member) => member.id) },
+                    messagesPage: { cursor: '', limit: 10 },
+                },
+                errorPolicy: 'all',
+            });
+
+            const ch: CoreChannelFieldsFragment = resp.data
+                ?.channelCreate as any;
+            return ch.id;
+        }
+
+        return channel.id;
+    };
+
+    const messages: CoreMessageFieldsFragment[] =
+        channel?.messages?.messages ?? ([] as any);
+
+    console.log('messages here', messages);
+
     return (
         <>
             <Header name="New Message" isBack />
-            <Members />
+            <Members onChange={(members) => setMembers(members)} />
+            <div className="flex flex-1 flex-col justify-start items-stretch">
+                {messages.map((message, i) => {
+                    const sender: CoreUserFieldsFragment =
+                        message.sender as any;
+                    return (
+                        <div
+                            key={i}
+                            className="flex justify-start items-stretch"
+                            style={{
+                                flexDirection: sender.isMe
+                                    ? 'row-reverse'
+                                    : 'row',
+                            }}
+                        >
+                            <div
+                                className="flex justify-start flex-col"
+                                style={{ width: 40, height: 40 }}
+                            >
+                                <ProfileImage user={sender} />
+                            </div>
+                            <Message message={message} />
+                        </div>
+                    );
+                })}
+            </div>
+            <NewMessage onSend={ensureChannel} />
         </>
     );
 }
 
-function Members() {
+function Members({
+    onChange,
+}: {
+    onChange: (members: CoreUserFieldsFragment[]) => void;
+}) {
     const [members, setMembers] = useState<CoreUserFieldsFragment[]>([]);
 
+    useEffect(() => {
+        onChange(members);
+    }, [members]);
+
     return (
-        <div
-            className="flex flex-col justify-center items-stretch my-5"
-            style={{ width: '100%' }}
-        >
+        <div className="flex flex-col justify-center items-stretch my-5">
             <Search
                 placeholder="Add Member"
                 onSelected={(member) => {
@@ -134,8 +228,4 @@ function Search({
             </div>
         </>
     );
-}
-
-function Input() {
-    return <div></div>;
 }

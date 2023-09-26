@@ -13,7 +13,7 @@ const httpLink = createHttpLink({
     credentials: 'same-origin',
 });
 
-const client = new ApolloClient({
+export const client = new ApolloClient({
     link: httpLink,
     cache: new InMemoryCache({
         typePolicies: {
@@ -40,13 +40,14 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             <Sidebar />
             <ApolloProvider client={client}>
                 <div
-                    className="flex flex-col items-stretch"
+                    className="flex flex-1 flex-col justify-start items-stretch"
                     style={{
                         flex: 3,
                         maxWidth: 1000,
-                        // background: 'black',
-                        // height: '100vh',
+                        // minHeight: '100vh',
+                        // background: 'green',
                         overflow: 'hidden',
+                        position: 'relative',
                     }}
                 >
                     {children}

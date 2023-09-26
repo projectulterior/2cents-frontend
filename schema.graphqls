@@ -89,6 +89,8 @@ type Mutation {
     messageUpdate(id: ID!, input: MessageUpdateInput!): Message!
     messageDelete(id: ID!): Message!
     messageRead(id: ID!): Message!
+
+    exportUsers: Boolean!
 }
 
 type Subscription {
@@ -98,6 +100,8 @@ type Subscription {
 
 type User {
     id: ID!
+
+    isMe: Boolean
 
     username: String
     name: String
@@ -293,7 +297,6 @@ input CommentUpdateInput {
 
 input MessageCreateInput {
     channelID: ID!
-    senderID: ID!
     content: String
     contentType: ContentType
 }
