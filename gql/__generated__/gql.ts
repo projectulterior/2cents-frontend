@@ -27,6 +27,7 @@ const documents = {
     "\n    fragment CoreUserFields on User {\n        id\n        isMe\n        username\n        name\n        bio\n        email\n        profile\n        cover\n    }\n": types.CoreUserFieldsFragmentDoc,
     "\n    query GetUser($id: ID) {\n        user(id: $id) {\n            ...CoreUserFields\n        }\n    }\n": types.GetUserDocument,
     "\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n": types.UserUpdateDocument,
+    "\n    mutation PasswordUpdate($old: String!, $new: String!) {\n        passwordUpdate(old: $old, new: $new)\n    }\n": types.PasswordUpdateDocument,
     "\n    query SearchUsers($query: String!, $page: Pagination!) {\n        searchUsers(query: $query, page: $page) {\n            next\n            users {\n                ...CoreUserFields\n            }\n        }\n    }\n": types.SearchUsersDocument,
 };
 
@@ -100,6 +101,10 @@ export function gql(source: "\n    query GetUser($id: ID) {\n        user(id: $i
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
 export function gql(source: "\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n"): (typeof documents)["\n    mutation UserUpdate($input: UserUpdateInput!) {\n        userUpdate(input: $input) {\n            ...CoreUserFields\n        }\n    }\n"];
+/**
+ * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
+export function gql(source: "\n    mutation PasswordUpdate($old: String!, $new: String!) {\n        passwordUpdate(old: $old, new: $new)\n    }\n"): (typeof documents)["\n    mutation PasswordUpdate($old: String!, $new: String!) {\n        passwordUpdate(old: $old, new: $new)\n    }\n"];
 /**
  * The gql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
