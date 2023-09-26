@@ -8,7 +8,7 @@ import {
 } from '@/gql/__generated__/graphql';
 import { QUERY_GET_CHANNEL } from '@/gql/channel';
 import { useQuery } from '@apollo/client';
-import Messages from '../../_components/Messages';
+import Messages, { NewMessage } from '../../_components/Messages';
 
 export default function ({ params }: { params: { id: string } }) {
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_CHANNEL, {
@@ -16,7 +16,7 @@ export default function ({ params }: { params: { id: string } }) {
             id: params.id,
             messagesPage: {
                 cursor: '',
-                limit: 10,
+                limit: 100,
             },
         },
         errorPolicy: 'all',

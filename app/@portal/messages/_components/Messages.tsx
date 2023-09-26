@@ -1,3 +1,5 @@
+'use client';
+
 import {
     ContentType,
     CoreMessageFieldsFragment,
@@ -22,10 +24,9 @@ export default function Messages({
     for (let i = 0; i < messages.length; i++) {
         const current: CoreMessageFieldsFragment = messages[i];
         const sender: CoreUserFieldsFragment = current.sender as any;
+
         var group: CoreMessageFieldsFragment[] = [];
         group.push(current);
-
-        console.log('new group');
 
         var createdAt: Date = new Date(current.createdAt as string);
         for (let j = i + 1; j < messages.length; j++) {
@@ -41,16 +42,14 @@ export default function Messages({
             }
             group.push(message);
             i++;
+            createdAt = date;
         }
         groups.push(group);
     }
 
     return (
         <>
-            <div
-                className="flex flex-1 flex-col-reverse justify-start items-stretch py-10"
-                // style={{ background: 'green' }}
-            >
+            <div className="flex flex-1 flex-col-reverse justify-start items-stretch">
                 {groups.map((group, i) => {
                     const sender: CoreUserFieldsFragment = group[0]
                         .sender as any;
@@ -75,7 +74,14 @@ export default function Messages({
                                     <ProfileImage user={sender} />
                                 </div>
                             </div>
-                            <div className="flex flex-col-reverse items-end">
+                            <div
+                                className="flex flex-col-reverse items-start"
+                                style={{
+                                    alignItems: sender.isMe
+                                        ? 'flex-end'
+                                        : 'flex-start',
+                                }}
+                            >
                                 {group.map((message, i) => {
                                     return (
                                         <Message key={i} message={message} />
@@ -100,7 +106,9 @@ export function Message({ message }: { message: CoreMessageFieldsFragment }) {
                 className="flex justify-center items-center p-2"
                 style={{
                     borderRadius: 10,
-                    background: sender.isMe ? 'lightgrey' : 'orange',
+                    background: sender.isMe ? 'lightgrey' : '#d67953',
+                    whiteSpace: 'pre-line',
+                    color: sender.isMe ? 'black' : 'white',
                 }}
             >
                 {message.content}
@@ -145,12 +153,13 @@ export function NewMessage({
 
     return (
         <div
-            className="flex flex-1 flex-row justify-center items-stretch mt-10"
+            className="flex flex-row justify-center items-stretch"
             style={{
                 borderBottom: '1px solid lightgrey',
-                position: 'absolute',
+                position: 'sticky',
                 bottom: 0,
                 width: '100%',
+                background: 'white',
             }}
         >
             <Emoji

@@ -43,10 +43,10 @@ export default function Layout({ children }: { children: React.ReactNode }) {
                     className="flex flex-1 flex-col justify-start items-stretch"
                     style={{
                         flex: 3,
-                        maxWidth: 1000,
+                        maxWidth: 900,
                         // minHeight: '100vh',
                         // background: 'green',
-                        overflow: 'hidden',
+                        // overflow: 'hidden',
                         position: 'relative',
                     }}
                 >
