@@ -24,7 +24,7 @@ body {
 }
 
 textarea:focus {
-    outline: black solid 1px;
+    outline: rgb(175, 175, 175) solid 1px;
 }
 
 .text-accent {

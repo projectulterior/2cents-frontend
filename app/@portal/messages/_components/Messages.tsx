@@ -6,7 +6,7 @@ import {
     CoreMessageFieldsFragmentDoc,
     CoreUserFieldsFragment,
 } from '@/gql/__generated__/graphql';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useAutosizeTextArea } from '../../(home)/page';
 import Emoji from '../../_components/Emoji';
 import { useMutation } from '@apollo/client';
@@ -20,6 +20,11 @@ export default function Messages({
     channelID: string;
     messages: CoreMessageFieldsFragment[];
 }) {
+    const endRef = useRef<HTMLDivElement>(null);
+    useEffect(() => {
+        endRef.current?.scrollIntoView({ behavior: 'instant' });
+    }, []);
+
     var groups: CoreMessageFieldsFragment[][] = [];
     for (let i = 0; i < messages.length; i++) {
         const current: CoreMessageFieldsFragment = messages[i];
@@ -50,6 +55,7 @@ export default function Messages({
     return (
         <>
             <div className="flex flex-1 flex-col-reverse justify-start items-stretch">
+                <div ref={endRef} />
                 {groups.map((group, i) => {
                     const sender: CoreUserFieldsFragment = group[0]
                         .sender as any;
@@ -153,9 +159,8 @@ export function NewMessage({
 
     return (
         <div
-            className="flex flex-row justify-center items-stretch"
+            className="flex flex-row justify-center items-stretch mt-2"
             style={{
-                borderBottom: '1px solid lightgrey',
                 position: 'sticky',
                 bottom: 0,
                 width: '100%',
@@ -166,14 +171,14 @@ export function NewMessage({
                 style={{ bottom: 50, left: 0 }}
                 onSelect={(emoji) => setContent((content) => content + emoji)}
             />
-            <div className="flex flex-1 flex-col">
+            <div className="flex flex-1 flex-col m-1">
                 <textarea
                     ref={textAreaRef}
-                    className="p-1"
+                    className="p-1 px-2"
                     style={{
                         display: 'block',
                         resize: 'none',
-                        borderRadius: 2,
+                        borderRadius: 10,
                         // background: 'lightgrey',
                         border: '1px solid lightgrey',
                         overflow: 'hidden',
