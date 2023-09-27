@@ -58,13 +58,14 @@ function NoChannels() {
 
 function Channel({ channel }: { channel: CoreChannelFieldsFragment }) {
     const members: CoreUserFieldsFragment[] = channel.members as any;
-    const messages: CoreMessageFieldsFragment[] = channel.messages
-        ?.messages as any;
-
     const others: CoreUserFieldsFragment[] = members.filter(
         (member) => !member.isMe,
     );
 
+    const messages: CoreMessageFieldsFragment[] = channel.messages
+        ?.messages as any;
+    const message: CoreMessageFieldsFragment = messages[0];
+    const createdAt: Date = new Date(message.createdAt);
     return (
         <Link
             className="hoverable flex flex-row justify-start items-center p-2"
@@ -75,6 +76,7 @@ function Channel({ channel }: { channel: CoreChannelFieldsFragment }) {
                 <ChannelName members={others} />
                 <Message message={messages[0]} />
             </div>
+            <p>{timestamp(createdAt)}</p>
         </Link>
     );
 }
@@ -122,4 +124,33 @@ export function names(members: CoreUserFieldsFragment[]): string[] {
     return others.map((member, i) =>
         member.name ? member.name : `@${member.username}`,
     );
+}
+
+function timestamp(date: Date): string {
+    const SECOND = 1000;
+    const MINUTE = 60 * SECOND;
+    const HOUR = 60 * MINUTE;
+    const DAY = 24 * HOUR;
+    const WEEK = 7 * DAY;
+
+    const diff = new Date().getTime() - date.getTime();
+    console.log('time', new Date(), date);
+    console.log('diff', diff, MINUTE);
+
+    if (diff < 10 * SECOND) {
+        return 'Just now';
+    }
+    if (diff < MINUTE) {
+        return `${Math.round(diff / SECOND)}s`;
+    }
+    if (diff < HOUR) {
+        return `${Math.round(diff / MINUTE)}m`;
+    }
+    if (diff < DAY) {
+        return `${Math.round(diff / HOUR)}h`;
+    }
+    if (diff < WEEK) {
+        return `${Math.round(diff / DAY)}d`;
+    }
+    return `${Math.round(diff / WEEK)}w`;
 }
