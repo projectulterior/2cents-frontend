@@ -28,6 +28,14 @@ export const MUTATION_USER_UPDATE = gql(`
     }
 `);
 
+export const MUTATION_USER_DELETE = gql(`
+    mutation UserDelete($id: ID!) {
+        userDelete {
+            id
+        }
+    }
+`);
+
 export const MUTATION_PASSWORD_UPDATE = gql(`
     mutation PasswordUpdate($old: String!, $new: String!) {
         passwordUpdate(old: $old, new: $new)

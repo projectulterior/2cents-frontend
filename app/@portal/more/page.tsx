@@ -9,7 +9,7 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from 'postcss';
 import { useMutation, useQuery } from '@apollo/client';
-import { QUERY_GET_USER } from '@/gql/user';
+import { MUTATION_USER_DELETE, QUERY_GET_USER } from '@/gql/user';
 import { MUTATION_PASSWORD_UPDATE, MUTATION_USER_UPDATE } from '@/gql/user';
 import {
     CoreUserFieldsFragment,
@@ -80,6 +80,7 @@ function UpdateEmail() {
                     setEmail(e.target.value);
                 }}
                 value={email}
+                placeholder="New Email"
             />
 
             <button
@@ -133,16 +134,16 @@ function UpdatePassword() {
         >
             <p
                 className="flex justify-left items-left"
-                style={{ flex: 2.4, paddingLeft: 30 }}
+                style={{ flex: 8, paddingLeft: 30 }}
             >
                 Change password
             </p>
             <input
-                key="email"
+                key="old"
                 className="flex justify-center items-center"
                 style={{
-                    flex: 5,
-                    margin: '5% 10% 5% 10%',
+                    flex: 2.5,
+
                     border: '2px solid orange',
                 }}
                 onChange={(e) => {
@@ -150,13 +151,14 @@ function UpdatePassword() {
                     setOldPassword(e.target.value);
                 }}
                 value={oldPassword}
+                placeholder="Confirm Password"
             />
 
             <input
-                key="email"
+                key="new"
                 className="flex justify-center items-center"
                 style={{
-                    flex: 5,
+                    flex: 2.5,
                     margin: '5% 10% 5% 10%',
                     border: '2px solid orange',
                 }}
@@ -165,6 +167,7 @@ function UpdatePassword() {
                     setNewPassword(e.target.value);
                 }}
                 value={newPassword}
+                placeholder="New Password"
             />
 
             <button
@@ -173,7 +176,7 @@ function UpdatePassword() {
                         oldPassword == '' || newPassword == '' || loading
                             ? 'lightgrey'
                             : '#d67953',
-                    padding: '5ps 15px 5px 15px',
+                    padding: '5px 15px 5px 15px',
                     borderRadius: 5,
                 }}
                 onClick={() =>
@@ -202,6 +205,27 @@ function UpdatePassword() {
         </div>
     );
 }
+
+// function DeactivateAccount({ id }: { id?: String }) {
+//     const [update, { data, loading, error, reset }] = useMutation(
+//         MUTATION_USER_DELETE,
+//         {
+//             errorPolicy: 'all',
+//         },
+//     );
+
+//     return (
+//         <div
+//             className="flex flex-row justify-left items-center"
+//             style={{
+//                 borderBottom: '1px solid lightgrey',
+//                 height: 70,
+//             }}
+//         >
+//             <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
+//         </div>
+//     );
+// }
 
 function Logout() {
     const router = useRouter();
