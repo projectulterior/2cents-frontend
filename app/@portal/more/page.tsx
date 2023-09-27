@@ -207,7 +207,7 @@ function UpdatePassword() {
     );
 }
 
-// function DeactivateAccount({ id }: { id?: String }) {
+// function DeactivateAccount({ onClick }: { onClick: () => string }) {
 //     const [update, { data, loading, error, reset }] = useMutation(
 //         MUTATION_USER_DELETE,
 //         {
