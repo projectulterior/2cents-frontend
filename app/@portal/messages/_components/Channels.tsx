@@ -61,27 +61,31 @@ function Channel({ channel }: { channel: CoreChannelFieldsFragment }) {
     const messages: CoreMessageFieldsFragment[] = channel.messages
         ?.messages as any;
 
+    const others: CoreUserFieldsFragment[] = members.filter(
+        (member) => !member.isMe,
+    );
+
     return (
         <Link
             className="hoverable flex flex-row justify-start items-center p-2"
             href={`/messages/c/${channel.id}`}
         >
-            <Members members={members} />
-            <Message message={messages[0]} />
+            <ChannelImage members={others} />
+            <div className="flex flex-1 flex-col">
+                <ChannelName members={others} />
+                <Message message={messages[0]} />
+            </div>
         </Link>
     );
 }
 
-function Members({ members }: { members: CoreUserFieldsFragment[] }) {
-    const others: CoreUserFieldsFragment[] = members.filter(
-        (member) => !member.isMe,
-    );
+function ChannelImage({ members }: { members: CoreUserFieldsFragment[] }) {
     return (
         <div
             className="flex flex-col justify-center items-center"
             // style={{ background: 'pink' }}
         >
-            {others.map((member, i) => (
+            {members.map((member, i) => (
                 <div
                     key={i}
                     className="flex flex-col justify-center items-center"
@@ -92,9 +96,30 @@ function Members({ members }: { members: CoreUserFieldsFragment[] }) {
                     >
                         <ProfileImage user={member} />
                     </div>
-                    <p>@{member.username}</p>
                 </div>
             ))}
         </div>
+    );
+}
+
+function ChannelName({ members }: { members: CoreUserFieldsFragment[] }) {
+    return (
+        <div>
+            {names(members).map((name, i) => (
+                <div key={i}>
+                    <p>{name}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
+
+export function names(members: CoreUserFieldsFragment[]): string[] {
+    const others: CoreUserFieldsFragment[] = members.filter(
+        (member) => !member.isMe,
+    );
+
+    return others.map((member, i) =>
+        member.name ? member.name : `@${member.username}`,
     );
 }

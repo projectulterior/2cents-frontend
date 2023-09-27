@@ -28,7 +28,7 @@ export default function ProfileImage({
                     aspectRatio: 1 / 1,
                     borderRadius: '1000px',
                     position: 'absolute',
-                    borderWidth: 5,
+                    borderWidth: 3,
                     overflow: 'hidden',
                     background: 'grey',
                 }}

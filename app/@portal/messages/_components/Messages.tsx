@@ -54,7 +54,7 @@ export default function Messages({
 
     return (
         <>
-            <div className="flex flex-1 flex-col-reverse justify-start items-stretch">
+            <div className="flex flex-1 flex-col-reverse justify-end items-stretch">
                 <div ref={endRef} />
                 {groups.map((group, i) => {
                     const sender: CoreUserFieldsFragment = group[0]

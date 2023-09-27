@@ -23,7 +23,7 @@ import {
     QUERY_GET_CHANNEL_BY_MEMBERS,
 } from '@/gql/channel';
 import { client } from '../../layout';
-import { Message, NewMessage } from '../_components/Messages';
+import Messages, { Message, NewMessage } from '../_components/Messages';
 
 export default function () {
     const [members, setMembers] = useState<CoreUserFieldsFragment[]>([]);
@@ -76,32 +76,10 @@ export default function () {
         <>
             <Header name="New Message" isBack />
             <Members onChange={(members) => setMembers(members)} />
-            <div className="flex flex-1 flex-col justify-start items-stretch">
-                {messages.map((message, i) => {
-                    const sender: CoreUserFieldsFragment =
-                        message.sender as any;
-                    return (
-                        <div
-                            key={i}
-                            className="flex justify-start items-stretch"
-                            style={{
-                                flexDirection: sender.isMe
-                                    ? 'row-reverse'
-                                    : 'row',
-                            }}
-                        >
-                            <div
-                                className="flex justify-start flex-col"
-                                style={{ width: 40, height: 40 }}
-                            >
-                                <ProfileImage user={sender} />
-                            </div>
-                            <Message message={message} />
-                        </div>
-                    );
-                })}
-            </div>
-            <NewMessage onSend={ensureChannel} />
+            <Messages
+                channelID={loading ? '' : channel.id}
+                messages={messages}
+            />
         </>
     );
 }
