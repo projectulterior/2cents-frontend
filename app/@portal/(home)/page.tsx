@@ -155,7 +155,7 @@ function CreatePost() {
 }
 
 // Updates the height of a <textarea> when the value changes.
-function useAutosizeTextArea(
+export function useAutosizeTextArea(
     textAreaRef: HTMLTextAreaElement | null,
     value: string,
 ) {

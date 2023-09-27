@@ -18,6 +18,7 @@ import {
 import Loading from '@/components/Loading';
 import { create } from 'domain';
 import { Content } from 'next/font/google';
+import { client } from '../layout';
 
 function Account() {
     const [isMarked, setIsMarked] = useState(false);
@@ -236,11 +237,12 @@ function Logout() {
             icon={<LogoutIcon size={40} />}
             onClick={() => {
                 fetch('/api/logout', { method: 'POST' })
-                    .then((resp) => {
+                    .then(async (resp) => {
                         if (resp.status != 200) {
                             throw resp.status;
                         }
 
+                        await client.clearStore();
                         router.push('/');
                         router.refresh();
                     })

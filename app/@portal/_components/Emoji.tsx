@@ -1,15 +1,20 @@
 import EmojiPicker from 'emoji-picker-react';
-import { useState } from 'react';
+import { CSSProperties, useState } from 'react';
 
 export default function Emoji({
+    style,
     onSelect,
 }: {
+    style?: CSSProperties;
     onSelect: (emoji: string) => void;
 }) {
     const [isExpanded, setIsExpanded] = useState(false);
 
     return (
-        <div style={{ position: 'relative' }}>
+        <div
+            className="flex justify-center items-center"
+            style={{ position: 'relative' }}
+        >
             <p
                 style={{ cursor: 'pointer' }}
                 onClick={() => setIsExpanded(!isExpanded)}
@@ -17,7 +22,7 @@ export default function Emoji({
                 Emoji
             </p>
             {isExpanded ? (
-                <div style={{ position: 'absolute' }}>
+                <div style={{ position: 'absolute', ...style }}>
                     <EmojiPicker
                         height={500}
                         width={400}
