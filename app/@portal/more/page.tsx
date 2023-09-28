@@ -207,26 +207,26 @@ function UpdatePassword() {
     );
 }
 
-// function DeactivateAccount({ onClick }: { onClick: () => string }) {
-//     const [update, { data, loading, error, reset }] = useMutation(
-//         MUTATION_USER_DELETE,
-//         {
-//             errorPolicy: 'all',
-//         },
-//     );
+function DeactivateAccount({ onClick }: { onClick: () => string }) {
+    const [update, { data, loading, error, reset }] = useMutation(
+        MUTATION_USER_DELETE,
+        {
+            errorPolicy: 'all',
+        },
+    );
 
-//     return (
-//         <div
-//             className="flex flex-row justify-left items-center"
-//             style={{
-//                 borderBottom: '1px solid lightgrey',
-//                 height: 70,
-//             }}
-//         >
-//             <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
-//         </div>
-//     );
-// }
+    return (
+        <div
+            className="flex flex-row justify-left items-center"
+            style={{
+                borderBottom: '1px solid lightgrey',
+                height: 70,
+            }}
+        >
+            <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
+        </div>
+    );
+}
 
 function Logout() {
     const router = useRouter();
