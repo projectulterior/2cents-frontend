@@ -24,7 +24,7 @@ export default function Messages({
 }) {
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        // endRef.current?.scrollIntoView({ behavior: 'instant' });
+        endRef.current?.scrollIntoView({ behavior: 'instant' });
         onLoaded();
     }, []); // this could a problem if it scrolls on pagination
 
