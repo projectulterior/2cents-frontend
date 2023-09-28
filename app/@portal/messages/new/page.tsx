@@ -24,6 +24,7 @@ import {
 } from '@/gql/channel';
 import { client } from '../../layout';
 import Messages, { Message, NewMessage } from '../_components/Messages';
+import { Channel } from '../c/[id]/page';
 
 export default function () {
     const [members, setMembers] = useState<CoreUserFieldsFragment[]>([]);
@@ -77,8 +78,9 @@ export default function () {
             <Header name="New Message" isBack />
             <Members onChange={(members) => setMembers(members)} />
             <Messages
-                channelID={loading ? '' : channel.id}
+                channelID={ensureChannel}
                 messages={messages}
+                onLoaded={() => {}}
             />
         </>
     );

@@ -14,12 +14,20 @@ import { names } from '../../_components/Channels';
 import { useEffect, useState } from 'react';
 
 export default function ({ params }: { params: { id: string } }) {
+    return <Channel channelID={params.id} />;
+}
+
+export function Channel({ channelID }: { channelID: string }) {
+    if (!channelID) {
+        return null;
+    }
+
     const [isLoaded, setIsLoaded] = useState(false);
     const [scrollHeight, setScrollHeight] = useState(0);
 
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_CHANNEL, {
         variables: {
-            id: params.id,
+            id: channelID,
             messagesPage: {
                 cursor: '',
                 limit: 50,
@@ -62,7 +70,8 @@ export default function ({ params }: { params: { id: string } }) {
         const channel: CoreChannelFieldsFragment = data?.channel as any;
         const next: string = channel?.messages?.next as any;
         if (
-            scroll.scroll <= 0 &&
+            scroll.scroll >= 50 &&
+            scroll.scroll <= 300 &&
             // scroll.scroll + scroll.offset >= scroll.height &&
             !loading &&
             next &&
@@ -73,7 +82,7 @@ export default function ({ params }: { params: { id: string } }) {
             setScrollHeight(document.body.scrollHeight);
             fetchMore({
                 variables: {
-                    id: params.id,
+                    id: channelID,
                     messagesPage: {
                         cursor: next,
                         limit: 30,
@@ -85,13 +94,12 @@ export default function ({ params }: { params: { id: string } }) {
 
     useEffect(() => {
         console.log('offset', document.body.scrollHeight - scrollHeight);
-        if (!loading) {
-            if (scrollHeight) {
-                window.scrollTo({
-                    top: document.body.scrollHeight - scrollHeight,
-                });
-                setScrollHeight(0);
-            }
+        if (!loading && isLoaded && data && scrollHeight) {
+            console.log('top', document.body.scrollHeight - scrollHeight);
+            setScrollHeight(0);
+            window.scrollTo({
+                top: document.body.scrollHeight - scrollHeight,
+            });
         }
     }, [data]);
 
@@ -114,23 +122,8 @@ export default function ({ params }: { params: { id: string } }) {
                 )}
                 isBack
             />
-            {/* <button
-                onClick={() => {
-                    console.log('fetchMore', channel.messages?.next);
-                    fetchMore({
-                        variables: {
-                            page: {
-                                cursor: channel.messages.next,
-                                limit: 10,
-                            },
-                        },
-                    });
-                }}
-            >
-                more
-            </button> */}
             <Messages
-                channelID={params.id}
+                channelID={() => Promise.resolve(channelID)}
                 messages={messages}
                 onLoaded={() => setIsLoaded(true)}
             />

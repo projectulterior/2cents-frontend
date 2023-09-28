@@ -18,14 +18,17 @@ export default function Messages({
     messages,
     onLoaded,
 }: {
-    channelID: string;
+    channelID: () => Promise<string>;
     messages: CoreMessageFieldsFragment[];
-    onLoaded: () => void;
+    onLoaded?: () => void;
 }) {
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: 'instant' });
-        onLoaded();
+        // window.scrollTo({ top: document.body.scrollHeight });
+        if (onLoaded) {
+            onLoaded();
+        }
     }, []); // this could a problem if it scrolls on pagination
 
     var groups: CoreMessageFieldsFragment[][] = [];
@@ -101,7 +104,7 @@ export default function Messages({
                     );
                 })}
             </div>
-            <NewMessage onSend={() => Promise.resolve(channelID)} />
+            <NewMessage onSend={channelID} />
         </>
     );
 }

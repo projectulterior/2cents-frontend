@@ -34,10 +34,10 @@ export const client = new ApolloClient({
                 keyFields: ['id'],
                 fields: {
                     messages: {
-                        keyArgs: false,
+                        keyArgs: false, // TODO: no longer updates on channels if false
                         merge(
                             existing = { messages: [] },
-                            incoming,
+                            incoming = { messages: [], next: '' },
                             { readField },
                         ) {
                             const messages = readField('messages', existing);
