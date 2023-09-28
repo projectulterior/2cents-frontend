@@ -12,8 +12,6 @@ export default function Posts({
     id?: string;
     children?: ReactNode;
 }) {
-    const ref = useRef<HTMLDivElement>(null);
-
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_POSTS, {
         variables: {
             id: id,
@@ -81,7 +79,7 @@ export default function Posts({
     const posts: CorePostFieldsFragment[] = data?.posts.posts as any;
 
     return (
-        <div ref={ref}>
+        <div>
             {children}
             {posts.map((post, i) => (
                 <Post key={i} post={post} />

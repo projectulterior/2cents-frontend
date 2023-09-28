@@ -30,6 +30,55 @@ export const client = new ApolloClient({
                     },
                 },
             },
+            Channel: {
+                keyFields: ['id'],
+                fields: {
+                    messages: {
+                        keyArgs: false,
+                        merge(
+                            existing = { messages: [] },
+                            incoming,
+                            { readField },
+                        ) {
+                            const messages = readField('messages', existing);
+
+                            console.log(
+                                'channel messages merge',
+                                existing,
+                                incoming,
+                            );
+                            console.log(
+                                'channel messages merge messages',
+                                messages,
+                            );
+                            return {
+                                messages: [
+                                    ...existing.messages,
+                                    ...incoming.messages,
+                                ],
+                                next: incoming.next,
+                            };
+                        },
+                    },
+                },
+            },
+
+            // Messages: {
+            //     fields: {
+            //         messages: {
+            //             merge(existing = [], incoming) {
+            //                 console.log('messages merge', existing, incoming);
+            //                 return [...existing, ...incoming];
+            //             },
+            //         },
+            //         next: {
+            //             merge(existing, incoming) {
+            //                 console.log('next merge', existing, incoming);
+            //                 return incoming;
+            //             },
+            //         },
+            //     },
+            // },
         },
     }),
 });

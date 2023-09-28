@@ -16,14 +16,17 @@ import ProfileImage from '../../_components/ProfileImage';
 export default function Messages({
     channelID,
     messages,
+    onLoaded,
 }: {
     channelID: string;
     messages: CoreMessageFieldsFragment[];
+    onLoaded: () => void;
 }) {
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: 'instant' });
-    }, [messages]); // this could a problem if it scrolls on pagination
+        // endRef.current?.scrollIntoView({ behavior: 'instant' });
+        onLoaded();
+    }, []); // this could a problem if it scrolls on pagination
 
     var groups: CoreMessageFieldsFragment[][] = [];
     for (let i = 0; i < messages.length; i++) {
@@ -200,10 +203,6 @@ export function NewMessage({
                                                                 'messages',
                                                                 existing,
                                                             ) as any;
-                                                        console.log(
-                                                            'messages ref',
-                                                            messages,
-                                                        );
 
                                                         const newMessageRef =
                                                             cache.writeFragment(
