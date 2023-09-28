@@ -15,13 +15,14 @@ import { useEffect, useState } from 'react';
 
 export default function ({ params }: { params: { id: string } }) {
     const [isLoaded, setIsLoaded] = useState(false);
+    const [scrollHeight, setScrollHeight] = useState(0);
 
     const { loading, data, error, fetchMore } = useQuery(QUERY_GET_CHANNEL, {
         variables: {
             id: params.id,
             messagesPage: {
                 cursor: '',
-                limit: 20,
+                limit: 50,
             },
         },
         errorPolicy: 'all',
@@ -68,17 +69,31 @@ export default function ({ params }: { params: { id: string } }) {
             isLoaded
         ) {
             console.log('useEffect next', next);
+
+            setScrollHeight(document.body.scrollHeight);
             fetchMore({
                 variables: {
                     id: params.id,
                     messagesPage: {
                         cursor: next,
-                        limit: 5,
+                        limit: 30,
                     },
                 },
             });
         }
     }, [loading, scroll, isLoaded]);
+
+    useEffect(() => {
+        console.log('offset', document.body.scrollHeight - scrollHeight);
+        if (!loading) {
+            if (scrollHeight) {
+                window.scrollTo({
+                    top: document.body.scrollHeight - scrollHeight,
+                });
+                setScrollHeight(0);
+            }
+        }
+    }, [data]);
 
     if (loading) {
         return <Loading />;
