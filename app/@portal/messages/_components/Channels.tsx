@@ -76,7 +76,7 @@ function Channel({ channel }: { channel: CoreChannelFieldsFragment }) {
                 <ChannelName members={others} />
                 <Message message={messages[0]} />
             </div>
-            <p>{timestamp(createdAt)}</p>
+            <p style={{ color: 'grey' }}>{timestamp(createdAt)}</p>
         </Link>
     );
 }

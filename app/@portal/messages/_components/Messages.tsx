@@ -23,7 +23,7 @@ export default function Messages({
     const endRef = useRef<HTMLDivElement>(null);
     useEffect(() => {
         endRef.current?.scrollIntoView({ behavior: 'instant' });
-    }, []);
+    }, [messages]); // this could a problem if it scrolls on pagination
 
     var groups: CoreMessageFieldsFragment[][] = [];
     for (let i = 0; i < messages.length; i++) {
@@ -123,33 +123,16 @@ export function Message({ message }: { message: CoreMessageFieldsFragment }) {
     );
 }
 
+type ChannelID = string;
+
 export function NewMessage({
     onSend,
 }: {
-    onSend: (message: string) => Promise<string>;
+    onSend: (message: string) => Promise<ChannelID>;
 }) {
     const [create, { data, loading, error, reset }] = useMutation(
         MUTATION_CREATE_MESSAGE,
-        {
-            errorPolicy: 'all',
-            update(cache, { data }) {
-                cache.modify({
-                    fields: {
-                        messages(existing = {}) {
-                            const newMessageRef = cache.writeFragment({
-                                data: data?.messageCreate as CoreMessageFieldsFragment,
-                                fragment: CoreMessageFieldsFragmentDoc,
-                                fragmentName: 'CoreMessageFields',
-                            });
-                            return {
-                                messages: {},
-                                ...existing,
-                            };
-                        },
-                    },
-                });
-            },
-        },
+        { errorPolicy: 'all' },
     );
 
     const [content, setContent] = useState('');
@@ -192,7 +175,7 @@ export function NewMessage({
                         if (e.key == 'Enter' && !e.shiftKey && content) {
                             e.preventDefault();
                             onSend(content)
-                                .then((channelID: string) =>
+                                .then((channelID: ChannelID) =>
                                     create({
                                         variables: {
                                             input: {
@@ -200,6 +183,46 @@ export function NewMessage({
                                                 content: content,
                                                 contentType: ContentType.Text,
                                             },
+                                        },
+                                        update(cache, { data }) {
+                                            const ok = cache.modify({
+                                                id: cache.identify({
+                                                    __typename: 'Channel',
+                                                    id: channelID,
+                                                }),
+                                                fields: {
+                                                    messages(
+                                                        existing = {},
+                                                        { readField },
+                                                    ) {
+                                                        const messages: any[] =
+                                                            readField(
+                                                                'messages',
+                                                                existing,
+                                                            ) as any;
+                                                        console.log(
+                                                            'messages ref',
+                                                            messages,
+                                                        );
+
+                                                        const newMessageRef =
+                                                            cache.writeFragment(
+                                                                {
+                                                                    data: data?.messageCreate as CoreMessageFieldsFragment,
+                                                                    fragment:
+                                                                        CoreMessageFieldsFragmentDoc,
+                                                                    fragmentName:
+                                                                        'CoreMessageFields',
+                                                                },
+                                                            );
+                                                        existing.messages = [
+                                                            newMessageRef,
+                                                            ...messages,
+                                                        ];
+                                                    },
+                                                },
+                                            });
+                                            console.log('cache ok', ok);
                                         },
                                     }),
                                 )
