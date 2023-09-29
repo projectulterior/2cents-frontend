@@ -19,6 +19,7 @@ import Loading from '@/components/Loading';
 import { create } from 'domain';
 import { Content } from 'next/font/google';
 import { client } from '../layout';
+import Deactivate from '@/components/svg/Deactivate';
 
 function Account() {
     const [isMarked, setIsMarked] = useState(false);
@@ -31,16 +32,7 @@ function Account() {
         >
             <UpdateEmail />
             <UpdatePassword />
-
-            <div
-                className="flex flex-row justify-left items-center"
-                style={{
-                    borderBottom: '1px solid lightgrey',
-                    height: 70,
-                }}
-            >
-                <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
-            </div>
+            <DeactivateAccount />
         </ExpandableItem>
     );
 }
@@ -139,38 +131,37 @@ function UpdatePassword() {
             >
                 Change password
             </p>
-            <input
-                key="old"
-                className="flex justify-center items-center"
-                style={{
-                    flex: 2.5,
+            <div className="flex justify-center items-center">
+                <input
+                    key="old"
+                    style={{
+                        flex: 2.5,
 
-                    border: '2px solid orange',
-                }}
-                onChange={(e) => {
-                    console.log(e.target.value);
-                    setOldPassword(e.target.value);
-                }}
-                value={oldPassword}
-                placeholder="Confirm Password"
-            />
+                        border: '2px solid orange',
+                    }}
+                    onChange={(e) => {
+                        console.log(e.target.value);
+                        setOldPassword(e.target.value);
+                    }}
+                    value={oldPassword}
+                    placeholder="Confirm Password"
+                />
 
-            <input
-                key="new"
-                className="flex justify-center items-center"
-                style={{
-                    flex: 2.5,
-                    margin: '5% 10% 5% 10%',
-                    border: '2px solid orange',
-                }}
-                onChange={(e) => {
-                    console.log(e.target.value);
-                    setNewPassword(e.target.value);
-                }}
-                value={newPassword}
-                placeholder="New Password"
-            />
-
+                <input
+                    key="new"
+                    style={{
+                        flex: 2.5,
+                        margin: '5% 10% 5% 10%',
+                        border: '2px solid orange',
+                    }}
+                    onChange={(e) => {
+                        console.log(e.target.value);
+                        setNewPassword(e.target.value);
+                    }}
+                    value={newPassword}
+                    placeholder="New Password"
+                />
+            </div>
             <button
                 style={{
                     background:
@@ -207,13 +198,14 @@ function UpdatePassword() {
     );
 }
 
-function DeactivateAccount({ onClick }: { onClick: () => string }) {
-    const [update, { data, loading, error, reset }] = useMutation(
+function DeactivateAccount() {
+    const [deleteUser, { data, loading, error, reset }] = useMutation(
         MUTATION_USER_DELETE,
         {
             errorPolicy: 'all',
         },
     );
+    const router = useRouter();
 
     return (
         <div
@@ -221,6 +213,21 @@ function DeactivateAccount({ onClick }: { onClick: () => string }) {
             style={{
                 borderBottom: '1px solid lightgrey',
                 height: 70,
+                cursor: 'pointer',
+            }}
+            onClick={() => {
+                deleteUser();
+                fetch('/api/logout', { method: 'POST' })
+                    .then(async (resp) => {
+                        if (resp.status != 200) {
+                            throw resp.status;
+                        }
+
+                        await client.clearStore();
+                        router.push('/');
+                        router.refresh();
+                    })
+                    .catch((err) => console.error('[deactivateAccount]', err));
             }}
         >
             <div style={{ paddingLeft: 30 }}>Deactivate your account</div>
