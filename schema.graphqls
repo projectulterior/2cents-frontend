@@ -17,6 +17,11 @@ type Query {
     users(page: Pagination!): Users!
 
     """
+    Returns the user's cents specified by the userID.
+    """
+    cents(id: ID): Cents!
+
+    """
     Returns the post specified by id
     """
     post(id: ID!): Post!
@@ -70,6 +75,8 @@ type Mutation {
     userFollow(id: ID!, isFollow: Boolean!): Follow!
 
     passwordUpdate(old: String!, new: String!): Boolean!
+    centsUpdate(amount: Int!): Cents!
+    centsTransfer(amount: Int!): Cents!
 
     postCreate(input: PostCreateInput!): Post!
     postUpdate(id: ID!, input: PostUpdateInput!): Post!
@@ -126,6 +133,7 @@ type Cents {
     deposited: Int!
     earned: Int!
     given: Int!
+    updatedAt: Time
 }
 
 type Users {

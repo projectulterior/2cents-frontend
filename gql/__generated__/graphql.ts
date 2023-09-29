@@ -42,6 +42,7 @@ export type Cents = {
   earned: Scalars['Int']['output'];
   given: Scalars['Int']['output'];
   total: Scalars['Int']['output'];
+  updatedAt?: Maybe<Scalars['Time']['output']>;
 };
 
 export type Channel = {
@@ -179,6 +180,8 @@ export type Messages = {
 
 export type Mutation = {
   __typename?: 'Mutation';
+  centsTransfer: Cents;
+  centsUpdate: Cents;
   channelAddMembers: Channel;
   channelCreate: Channel;
   channelDelete: Channel;
@@ -199,6 +202,16 @@ export type Mutation = {
   userDelete: User;
   userFollow: Follow;
   userUpdate: User;
+};
+
+
+export type MutationCentsTransferArgs = {
+  amount: Scalars['Int']['input'];
+};
+
+
+export type MutationCentsUpdateArgs = {
+  amount: Scalars['Int']['input'];
 };
 
 
@@ -353,6 +366,8 @@ export type Posts = {
 
 export type Query = {
   __typename?: 'Query';
+  /** Returns the user's cents specified by the userID. */
+  cents: Cents;
   channel: Channel;
   channelByMembers: Channel;
   channels: Channels;
@@ -381,6 +396,11 @@ export type Query = {
   user: User;
   /** Returns all users in 2cents */
   users: Users;
+};
+
+
+export type QueryCentsArgs = {
+  id?: InputMaybe<Scalars['ID']['input']>;
 };
 
 
