@@ -10,6 +10,13 @@ export const CORE_USER_FIELDS = gql(`
         email
         profile
         cover
+
+        cents {
+            total
+            deposited
+            earned
+            given
+        }
     }
 `);
 
@@ -25,6 +32,15 @@ export const MUTATION_USER_UPDATE = gql(`
     mutation UserUpdate($input: UserUpdateInput!) {
         userUpdate(input: $input) {
             ...CoreUserFields
+        }
+    }
+`);
+
+export const MUTATION_CENTS_UPDATE = gql(`
+    mutation CentsUpdate($amount: Int!) {
+        centsUpdate(amount: $amount) {
+            total
+            deposited
         }
     }
 `);

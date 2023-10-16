@@ -9,7 +9,11 @@ import { ReactNode, useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Input } from 'postcss';
 import { useMutation, useQuery } from '@apollo/client';
-import { MUTATION_USER_DELETE, QUERY_GET_USER } from '@/gql/user';
+import {
+    MUTATION_CENTS_UPDATE,
+    MUTATION_USER_DELETE,
+    QUERY_GET_USER,
+} from '@/gql/user';
 import { MUTATION_PASSWORD_UPDATE, MUTATION_USER_UPDATE } from '@/gql/user';
 import {
     CoreUserFieldsFragment,
@@ -54,12 +58,6 @@ function UpdateEmail() {
                 height: 70,
             }}
         >
-            <p
-                className="flex justify-left items-left"
-                style={{ flex: 2.4, paddingLeft: 30 }}
-            >
-                Change email address
-            </p>
             <input
                 key="email"
                 className="flex justify-right items-center"
@@ -73,7 +71,7 @@ function UpdateEmail() {
                     setEmail(e.target.value);
                 }}
                 value={email}
-                placeholder="New Email"
+                placeholder="Update Email"
             />
 
             <button
@@ -119,49 +117,41 @@ function UpdatePassword() {
 
     return (
         <div
-            className="flex flex-row justify-left items-center"
+            className="flex justify-left items-center"
             style={{
                 borderBottom: '1px solid lightgrey',
                 height: 70,
             }}
         >
-            <p
-                className="flex justify-left items-left"
-                style={{ flex: 8, paddingLeft: 30 }}
-            >
-                Change password
-            </p>
-            <div className="flex justify-center items-center">
-                <input
-                    key="old"
-                    style={{
-                        flex: 2.5,
+            <input
+                key="old"
+                style={{
+                    flex: 2.5,
+                    margin: '5% 10% 5% 10%',
+                    border: '2px solid orange',
+                }}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setOldPassword(e.target.value);
+                }}
+                value={oldPassword}
+                placeholder="Confirm Password"
+            />
 
-                        border: '2px solid orange',
-                    }}
-                    onChange={(e) => {
-                        console.log(e.target.value);
-                        setOldPassword(e.target.value);
-                    }}
-                    value={oldPassword}
-                    placeholder="Confirm Password"
-                />
-
-                <input
-                    key="new"
-                    style={{
-                        flex: 2.5,
-                        margin: '5% 10% 5% 10%',
-                        border: '2px solid orange',
-                    }}
-                    onChange={(e) => {
-                        console.log(e.target.value);
-                        setNewPassword(e.target.value);
-                    }}
-                    value={newPassword}
-                    placeholder="New Password"
-                />
-            </div>
+            <input
+                key="new"
+                style={{
+                    flex: 2.5,
+                    margin: '5% 10% 5% 10%',
+                    border: '2px solid orange',
+                }}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    setNewPassword(e.target.value);
+                }}
+                value={newPassword}
+                placeholder="New Password"
+            />
             <button
                 style={{
                     background:
@@ -268,8 +258,111 @@ function Funds() {
             icon={<MoneyBox size={40} isMarked={isMarked} />}
             onChange={(isExpanded) => setIsMarked(isExpanded)}
         >
-            <h1>Expanded</h1>
+            <Availability />
+            <AddFunds />
         </ExpandableItem>
+    );
+}
+
+function Availability() {
+    const { loading, data, error, fetchMore } = useQuery(QUERY_GET_USER, {
+        errorPolicy: 'all',
+    });
+
+    if (loading) {
+        return <Loading />;
+    }
+
+    if (error) {
+        console.error(error);
+    }
+
+    const user: CoreUserFieldsFragment = data?.user as any;
+
+    return (
+        <div
+            className="flex flex-row justify-left items-center"
+            style={{
+                borderBottom: '1px solid lightgrey',
+                height: 70,
+            }}
+        >
+            <p
+                className="flex justify-left items-left"
+                style={{ flex: 2.4, paddingLeft: 30 }}
+            >
+                Availability
+            </p>
+            <p
+                className="flex justify-left items-left"
+                style={{ background: 'yellow', height: 70 }}
+            >
+                {user.cents?.total}
+            </p>
+            <p>1</p>
+        </div>
+    );
+}
+
+function AddFunds() {
+    const [cents, setCents] = useState(0);
+    const [update, { data, loading, error, reset }] = useMutation(
+        MUTATION_CENTS_UPDATE,
+        {
+            errorPolicy: 'all',
+        },
+    );
+
+    return (
+        <div
+            className="flex flex-row justify-left items-center"
+            style={{
+                borderBottom: '1px solid lightgrey',
+                height: 70,
+            }}
+        >
+            <input
+                key="cents"
+                className="flex justify-right items-center"
+                style={{
+                    flex: 5,
+                    margin: '5% 10% 5% 10%',
+                    border: '2px solid orange',
+                }}
+                onChange={(e) => {
+                    console.log(e.target.value);
+                    const value = parseInt(e.target.value);
+                    setCents(value);
+                }}
+                value={cents}
+                placeholder="Add # of Cents"
+            />
+
+            <button
+                style={{
+                    background: cents == 0 || loading ? 'lightgrey' : '#d67953',
+                    padding: '5px 15px 5px 15px',
+                    borderRadius: 5,
+                }}
+                onClick={() =>
+                    update({
+                        variables: {
+                            amount: cents,
+                        },
+                    })
+                        .then((data) => {
+                            console.log('[updateCents]', data);
+                            setCents(0);
+                        })
+                        .catch((err) => {
+                            console.error('[updateCents]', err);
+                        })
+                }
+                disabled={cents == 0 || loading}
+            >
+                {loading ? <Loading /> : <p>Confirm</p>}
+            </button>
+        </div>
     );
 }
 
